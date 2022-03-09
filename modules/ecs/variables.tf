@@ -43,10 +43,10 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "ssh_pubkey_file" {
-  description = "Path to an SSH public key"
-  default     = "~/.ssh/id_rsa.pub"
-}
+# variable "ssh_pubkey_file" {
+#   description = "Path to an SSH public key"
+#   default     = "~/.ssh/id_rsa.pub"
+# }
 
 # CloudWatch
 

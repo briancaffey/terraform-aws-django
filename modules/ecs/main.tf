@@ -36,34 +36,34 @@ resource "aws_security_group" "this" {
 # assume role
 resource "aws_iam_role" "ecs_host" {
   name               = "ecs_host_role_prod"
-  assume_role_policy = file("./policies/ecs-role.json")
+  assume_role_policy = file("${path.module}/policies/ecs-role.json")
 }
 
 resource "aws_iam_role_policy" "ecs_instance" {
   name   = "ecs_instance_role_policy"
-  policy = file("./policies/ecs-instance-role-policy.json")
+  policy = file("${path.module}/policies/ecs-instance-role-policy.json")
   role   = aws_iam_role.ecs_host.id
 }
 
 resource "aws_iam_role" "ecs_task" {
   name               = "ecs_task_role"
-  assume_role_policy = file("./policies/ecs-task-role.json")
+  assume_role_policy = file("${path.module}/policies/ecs-task-role.json")
 }
 
 resource "aws_iam_role_policy" "ecs_task" {
   name   = "ecs_task_role_policy"
-  policy = file("./policies/ecs-task-role-policy.json")
+  policy = file("${path.module}/policies/ecs-task-role-policy.json")
   role   = aws_iam_role.ecs_task.id
 }
 
 resource "aws_iam_role" "ecs_service" {
   name               = "ecs_service_role_prod"
-  assume_role_policy = file("./policies/ecs-role.json")
+  assume_role_policy = file("${path.module}/policies/ecs-role.json")
 }
 
 resource "aws_iam_role_policy" "ecs_service" {
   name   = "ecs_service_role_policy"
-  policy = file("./policies/ecs-service-role-policy.json")
+  policy = file("${path.module}/policies/ecs-service-role-policy.json")
   role   = aws_iam_role.ecs_service.id
 }
 
@@ -77,10 +77,10 @@ resource "aws_iam_instance_profile" "this" {
 # ECS & EC2
 ###############################################################################
 
-resource "aws_key_pair" "this" {
-  key_name   = "${var.env}_key_pair"
-  public_key = file(var.ssh_pubkey_file)
-}
+# resource "aws_key_pair" "this" {
+#   key_name   = "${var.env}_key_pair"
+#   public_key = file(var.ssh_pubkey_file)
+# }
 
 resource "aws_ecs_cluster" "this" {
   name = "${var.env}-cluster"
@@ -92,7 +92,7 @@ resource "aws_launch_configuration" "this" {
   instance_type               = var.instance_type
   security_groups             = [aws_security_group.this.id]
   iam_instance_profile        = aws_iam_instance_profile.this.name
-  key_name                    = aws_key_pair.this.key_name
+  # key_name                    = aws_key_pair.this.key_name
   associate_public_ip_address = true
   user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.env}-cluster' > /etc/ecs/ecs.config"
 }
