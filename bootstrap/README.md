@@ -1,1 +1,0 @@
-# Bootstrap Terraform Backend Resources
