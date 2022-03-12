@@ -143,8 +143,8 @@ module "web-ui" {
   image                    = local.fe_image
   env                      = var.env
   alb_default_tg_arn       = module.lb.alb_default_tg_arn
-  log_group_name           = "/ecs/web-ui"
-  log_stream_name          = "web-ui"
+  log_group_name           = "/ecs/${var.env}/web-ui"
+  log_stream_prefix        = "web-ui"
   region                   = var.region
   cpu                      = var.api_cpu
   memory                   = var.api_memory
@@ -171,8 +171,8 @@ module "api" {
   image                    = local.be_image
   env                      = var.env
   alb_default_tg_arn       = module.lb.alb_default_tg_arn
-  log_group_name           = "/ecs/api"
-  log_stream_name          = "api"
+  log_group_name           = "/ecs/${var.env}/api"
+  log_stream_prefix        = "api"
   region                   = var.region
   cpu                      = var.api_cpu
   memory                   = var.api_memory
@@ -198,8 +198,8 @@ module "default_celery_worker" {
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
   env                      = var.env
-  log_group_name           = "/ecs/celery-default-worker"
-  log_stream_name          = "celery-default-worker"
+  log_group_name           = "/ecs/${var.env}/celery-default-worker"
+  log_stream_prefix        = "celery-default-worker"
   region                   = var.region
   cpu                      = var.default_celery_worker_cpu
   memory                   = var.default_celery_worker_memory
@@ -219,8 +219,8 @@ module "celery_beat" {
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
   env                      = var.env
-  log_group_name           = "/ecs/celery-beat"
-  log_stream_name          = "celery-beat"
+  log_group_name           = "/ecs/${var.env}/celery-beat"
+  log_stream_prefix        = "celery-beat"
   region                   = var.region
   cpu                      = var.celery_beat_cpu
   memory                   = var.celery_beat_memory
@@ -240,8 +240,8 @@ module "migrate" {
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
   env                      = var.env
-  log_group_name           = "/ecs/migrate"
-  log_stream_name          = "migrate"
+  log_group_name           = "/ecs/${var.env}/migrate"
+  log_stream_prefix        = "migrate"
   region                   = var.region
   cpu                      = var.migrate_cpu
   memory                   = var.migrate_memory
@@ -261,8 +261,8 @@ module "collectstatic" {
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
   env                      = var.env
-  log_group_name           = "/ecs/collectstatic"
-  log_stream_name          = "collectstatic"
+  log_group_name           = "/ecs/${var.env}/collectstatic"
+  log_stream_prefix        = "collectstatic"
   region                   = var.region
   cpu                      = var.collectstatic_cpu
   memory                   = var.collectstatic_memory

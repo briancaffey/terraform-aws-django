@@ -49,7 +49,7 @@ variable "log_group_name" {
   description = "Name of the CloudWatch Logs group"
 }
 
-variable "log_stream_name" {
+variable "log_stream_prefix" {
   type        = string
   description = "Name of the CloudWatch Logs stream"
 }
