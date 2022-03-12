@@ -96,7 +96,7 @@ variable "instance_type" {
 }
 
 ##############################################################################
-# Backend Application - Gunicorn, Celery, Beat, etc.
+# Application Services - Gunicorn, Celery, Beat, frontend SPA, etc.
 ##############################################################################
 
 # Shared
@@ -104,6 +104,7 @@ variable "instance_type" {
 variable "extra_env_vars" {
   description = "User-defined environment variables to pass to the backend service and task containers (api, worker, migrate, etc.)"
   type        = list(object({ name = string, value = string }))
+  default     = []
 }
 
 variable "s3_bucket_name" {

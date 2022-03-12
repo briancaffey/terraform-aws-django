@@ -35,32 +35,32 @@ resource "aws_security_group" "this" {
 
 # assume role
 resource "aws_iam_role" "ecs_host" {
-  name               = "ecs_host_role_prod"
+  name = "ecs_host_role_prod"
   assume_role_policy = jsonencode({
-    "Version": "2008-10-17",
-    "Statement": [
+    Version = "2008-10-17"
+    Statement = [
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": [
+        Effect = "Allow"
+        Principal = {
+          Service = [
             "ecs.amazonaws.com",
             "ec2.amazonaws.com"
           ]
-        },
-        "Action": "sts:AssumeRole"
+        }
+        Action = "sts:AssumeRole"
       }
     ]
   })
 }
 
 resource "aws_iam_role_policy" "ecs_instance" {
-  name   = "ecs_instance_role_policy"
+  name = "ecs_instance_role_policy"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
+        Effect = "Allow"
+        Action = [
           "ecs:*",
           "ec2:*",
           "elasticloadbalancing:*",
@@ -71,78 +71,73 @@ resource "aws_iam_role_policy" "ecs_instance" {
           "logs:*",
           "elasticache:*",
           "secretsmanager:*"
-        ],
-        "Resource": "*"
+        ]
+        Resource = "*"
       }
     ]
   })
-  role   = aws_iam_role.ecs_host.id
+  role = aws_iam_role.ecs_host.id
 }
 
 resource "aws_iam_role" "ecs_task" {
-  name               = "ecs_task_role"
+  name = "ecs_task_role"
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Sid": "",
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "ecs-tasks.amazonaws.com"
-        },
-        "Action": "sts:AssumeRole"
+        Sid    = ""
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
       }
     ]
   })
 }
 
 resource "aws_iam_role_policy" "ecs_task" {
-  name   = "ecs_task_role_policy"
+  name = "ecs_task_role_policy"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
-          "s3:*"
-        ],
-        "Resource": [
-          "*"
-        ]
+        Effect   = "Allow"
+        Action   = ["s3:*"] # TODO: tighten this down
+        Resource = ["*"]
       }
     ]
-  }
-)
-  role   = aws_iam_role.ecs_task.id
+  })
+  role = aws_iam_role.ecs_task.id
 }
 
 resource "aws_iam_role" "ecs_service" {
-  name               = "ecs_service_role_prod"
+  name = "ecs_service_role_prod"
   assume_role_policy = jsonencode({
-    "Version": "2008-10-17",
-    "Statement": [
+    Version = "2008-10-17"
+    Statement = [
       {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-          "Service": [
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = [
             "ecs.amazonaws.com",
             "ec2.amazonaws.com"
           ]
-        },
-        "Effect": "Allow"
+        }
+        Effect = "Allow"
       }
     ]
   })
 }
 
 resource "aws_iam_role_policy" "ecs_service" {
-  name   = "ecs_service_role_policy"
+  name = "ecs_service_role_policy"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
+        Effect = "Allow"
+        Action = [
           "elasticloadbalancing:Describe*",
           "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
           "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
@@ -150,14 +145,12 @@ resource "aws_iam_role_policy" "ecs_service" {
           "ec2:AuthorizeSecurityGroupIngress",
           "elasticloadbalancing:RegisterTargets",
           "elasticloadbalancing:DeregisterTargets"
-        ],
-        "Resource": [
-          "*"
         ]
+        Resource = ["*"]
       }
     ]
   })
-  role   = aws_iam_role.ecs_service.id
+  role = aws_iam_role.ecs_service.id
 }
 
 resource "aws_iam_instance_profile" "this" {
@@ -180,11 +173,11 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_launch_configuration" "this" {
-  name                        = "${var.env}-launch-config"
-  image_id                    = lookup(var.amis, var.region)
-  instance_type               = var.instance_type
-  security_groups             = [aws_security_group.this.id]
-  iam_instance_profile        = aws_iam_instance_profile.this.name
+  name                 = "${var.env}-launch-config"
+  image_id             = lookup(var.amis, var.region)
+  instance_type        = var.instance_type
+  security_groups      = [aws_security_group.this.id]
+  iam_instance_profile = aws_iam_instance_profile.this.name
   # key_name                    = aws_key_pair.this.key_name
   associate_public_ip_address = true
   user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.env}-cluster' > /etc/ecs/ecs.config"
