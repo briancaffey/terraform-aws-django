@@ -9,5 +9,8 @@ examples-simple-apply:
 
 examples-simple: examples-simple-init	examples-simple-plan	examples-simple-apply
 
+examples-simple-destroy:
+	terraform -chdir=examples/simple destroy
+
 tf-fmt:
 	terraform fmt -recursive
