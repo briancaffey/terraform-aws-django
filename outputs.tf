@@ -17,3 +17,15 @@ output "migrate_script" {
 output "collectstatic_script" {
   value = module.collectstatic.task_execution_command
 }
+
+output "frontend_task_family" {
+  value = module.web-ui.task_family
+}
+
+output "frontend_service_name" {
+  value = module.web-ui.service_name
+}
+
+output "ecs_cluster_name" {
+  value = module.ecs.cluster_name
+}

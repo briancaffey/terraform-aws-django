@@ -10,6 +10,10 @@ output "cluster_arn" {
   value = aws_ecs_cluster.this.arn
 }
 
+output "cluster_name" {
+  value = "${var.env}-cluster"
+}
+
 output "service_iam_role_arn" {
   value = aws_iam_role.ecs_service.arn
 }
