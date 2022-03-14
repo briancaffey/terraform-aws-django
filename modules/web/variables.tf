@@ -114,3 +114,16 @@ variable "health_check_path" {
   default     = "/"
   type        = string
 }
+
+variable "health_check_healthy_threshold" {
+  description = "Number of consecutive health checks successes required"
+  default     = 2
+  type        = number
+}
+
+
+variable "health_check_interval" {
+  description = "Time between health checks"
+  default     = 5
+  type        = number
+}

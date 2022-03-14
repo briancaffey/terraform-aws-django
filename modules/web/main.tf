@@ -60,9 +60,9 @@ resource "aws_lb_target_group" "this" {
   vpc_id   = var.vpc_id
 
   health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "2"
-    interval            = "120"
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = 3
+    interval            = var.health_check_interval
     matcher             = "200-399"
     path                = var.health_check_path
     port                = "traffic-port"

@@ -14,3 +14,6 @@ examples-simple-destroy:
 
 tf-fmt:
 	terraform fmt -recursive
+
+tf-validate:
+	terraform validate
