@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.3.0...v0.3.1) (2022-03-14)
+
+
+### Bug Fixes
+
+* **health-checks:** change interval default to be greater than timeout default value ([1ad0e87](https://github.com/briancaffey/terraform-aws-django/commit/1ad0e878dfa6cc6dc43eb8122725be83677cb5b9))
+
 ## [0.3.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.2.0...v0.3.0) (2022-03-14)
 
 
