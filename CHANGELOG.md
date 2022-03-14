@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.1.1...v0.2.0) (2022-03-14)
+
+
+### Features
+
+* **outputs:** add outputs for web module ([#6](https://github.com/briancaffey/terraform-aws-django/issues/6)) ([15e248d](https://github.com/briancaffey/terraform-aws-django/commit/15e248d6428f5b02bbe7ddf7b661b7fe317e2d74))
+
 ### [0.1.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.1.0...v0.1.1) (2022-03-12)
 
 
