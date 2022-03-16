@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.3.1...v0.4.0) (2022-03-16)
+
+
+### Features
+
+* **updates:** add settings for speeding up service updates ([#11](https://github.com/briancaffey/terraform-aws-django/issues/11)) ([61c4538](https://github.com/briancaffey/terraform-aws-django/commit/61c45383a522f683df561997f334efd68009ead5))
+
 ### [0.3.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.3.0...v0.3.1) (2022-03-14)
 
 
