@@ -180,7 +180,11 @@ resource "aws_launch_configuration" "this" {
   iam_instance_profile = aws_iam_instance_profile.this.name
   # key_name                    = aws_key_pair.this.key_name
   associate_public_ip_address = true
-  user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.env}-cluster' > /etc/ecs/ecs.config"
+  user_data                   = <<EOT
+#!/bin/bash
+echo ECS_CLUSTER='${var.env}-cluster' > /etc/ecs/ecs.config
+echo ECS_CONTAINER_STOP_TIMEOUT=2 >> /etc/ecs/ecs.config
+EOT
 }
 
 
