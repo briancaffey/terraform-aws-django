@@ -50,12 +50,22 @@ module "ecs" {
   private_subnets   = module.vpc.private_subnets
   instance_type     = var.instance_type
   alb_sg_id         = module.lb.alb_sg_id
+  instance_profile_name = module.iam.instance_profile_name
   cluster_name      = "${var.env}-cluster"
   env               = var.env
   region            = var.region
   autoscale_desired = 1
   autoscale_min     = 1
   autoscale_max     = 1
+}
+
+###############################################################################
+# IAM
+###############################################################################
+
+module "iam" {
+  source = "./modules/iam"
+  env    = var.env
 }
 
 ###############################################################################
@@ -136,8 +146,8 @@ module "web-ui" {
   source                   = "./modules/web"
   name                     = "web-ui"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.frontend_command
   env_vars                 = []
   image                    = local.fe_image
@@ -164,8 +174,8 @@ module "api" {
   source                   = "./modules/web"
   name                     = "gunicorn"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.api_command
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
@@ -192,8 +202,8 @@ module "default_celery_worker" {
   source                   = "./modules/celery_worker"
   name                     = "default"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.default_celery_worker_command
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
@@ -213,8 +223,8 @@ module "celery_beat" {
   source                   = "./modules/celery_beat"
   name                     = "beat"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.celery_beat_command
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
@@ -234,8 +244,8 @@ module "migrate" {
   name                     = "migrate"
   source                   = "./modules/management_command"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.migrate_command
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image
@@ -255,8 +265,8 @@ module "collectstatic" {
   name                     = "collectstatic"
   source                   = "./modules/management_command"
   ecs_cluster_id           = module.ecs.cluster_id
-  task_role_arn            = module.ecs.task_role_arn
-  ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
+  task_role_arn            = module.iam.task_role_arn
+  ecs_service_iam_role_arn = module.iam.service_iam_role_arn
   command                  = var.collectstatic_command
   env_vars                 = concat(local.env_vars, var.extra_env_vars)
   image                    = local.be_image

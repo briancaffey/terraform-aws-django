@@ -13,11 +13,3 @@ output "cluster_arn" {
 output "cluster_name" {
   value = "${var.env}-cluster"
 }
-
-output "service_iam_role_arn" {
-  value = aws_iam_role.ecs_service.arn
-}
-
-output "task_role_arn" {
-  value = aws_iam_role.ecs_task.arn
-}
