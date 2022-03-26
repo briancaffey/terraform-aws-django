@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.4.0...v0.5.0) (2022-03-26)
+
+
+### Features
+
+* **iam:** add separate submodule for IAM 13 ([#14](https://github.com/briancaffey/terraform-aws-django/issues/14)) ([935cb0c](https://github.com/briancaffey/terraform-aws-django/commit/935cb0ce0c0e2b0fcec8e1bdb4de7a94d800faf3))
+
 ## [0.4.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.3.1...v0.4.0) (2022-03-16)
 
 
