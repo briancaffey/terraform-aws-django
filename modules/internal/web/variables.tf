@@ -127,3 +127,7 @@ variable "ecs_sg_id" {
   description = "ECS Security Group ID"
   type        = string
 }
+
+variable "private_subnets" {
+  type = list(string)
+}

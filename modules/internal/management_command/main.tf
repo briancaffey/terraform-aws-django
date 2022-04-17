@@ -10,8 +10,8 @@ resource "aws_cloudwatch_log_stream" "this" {
 
 resource "aws_ecs_task_definition" "this" {
   family = "${terraform.workspace}-${var.name}"
-  cpu         = var.cpu
-  memory      = var.memory
+  cpu    = var.cpu
+  memory = var.memory
   container_definitions = jsonencode([
     {
       name        = var.name
@@ -30,5 +30,6 @@ resource "aws_ecs_task_definition" "this" {
       }
     }
   ])
-  task_role_arn = var.task_role_arn
+  task_role_arn      = var.task_role_arn
+  execution_role_arn = var.execution_role_arn
 }

@@ -18,8 +18,3 @@ variable "vpc_id" {
   description = "ID of the VPC to create the ALB in"
   type        = string
 }
-
-variable "env" {
-  description = "Name of environment to deploy (used for naming)"
-  type        = string
-}

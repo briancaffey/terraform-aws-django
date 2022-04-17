@@ -18,11 +18,6 @@ variable "task_role_arn" {
   type        = string
 }
 
-variable "env" {
-  description = "Environment"
-  type        = string
-}
-
 variable "command" {
   type        = list(string)
   description = "Command to run in Docker container"
@@ -74,4 +69,9 @@ variable "memory" {
   default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
+}
+
+variable "ecs_sg_id" {
+  description = "ECS Security Group ID"
+  type        = string
 }

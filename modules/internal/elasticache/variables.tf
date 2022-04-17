@@ -15,8 +15,3 @@ variable "azs" {
   description = "AZs in which to place the ElastiCache cluster"
   type        = list(string)
 }
-
-variable "env" {
-  description = "Name of environment to deploy (used for naming)"
-  type        = string
-}

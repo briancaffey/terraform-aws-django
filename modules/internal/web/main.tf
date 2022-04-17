@@ -9,7 +9,7 @@ resource "aws_cloudwatch_log_stream" "this" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family = "${terraform.workspace}-${var.name}"
+  family                   = "${terraform.workspace}-${var.name}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.cpu
@@ -33,13 +33,14 @@ resource "aws_ecs_task_definition" "this" {
       portMappings = [
         {
           containerPort = var.port
-          hostPort      = 0
+          hostPort      = var.port
           protocol      = "tcp"
         }
       ]
     }
   ])
-  task_role_arn = var.task_role_arn
+  task_role_arn      = var.task_role_arn
+  execution_role_arn = var.execution_role_arn
 }
 
 resource "aws_ecs_service" "this" {
@@ -47,7 +48,6 @@ resource "aws_ecs_service" "this" {
   cluster         = var.ecs_cluster_id
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.this.arn
-  iam_role        = var.ecs_service_iam_role_arn
   desired_count   = var.app_count
 
   load_balancer {
@@ -66,6 +66,7 @@ resource "aws_ecs_service" "this" {
 resource "aws_lb_target_group" "this" {
   port                 = var.port
   protocol             = "HTTP"
+  target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 5
 

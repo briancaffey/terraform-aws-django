@@ -22,6 +22,13 @@ variable "public_subnets" {
   type = list(string)
 }
 
+# Security Groups
+
+variable "ecs_sg_id" {
+  type        = string
+  description = "ECS Security Group ID"
+}
+
 # Load balancer
 
 variable "listener_arn" {
@@ -53,6 +60,12 @@ variable "execution_role_arn" {
 
 variable "rds_address" {
   type = string
+}
+
+# alb_default_tg_arn
+variable "alb_default_tg_arn" {
+  type        = string
+  description = "default target group ARN"
 }
 
 
@@ -146,13 +159,13 @@ variable "frontend_command" {
 }
 
 variable "frontend_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container for the frontend task"
   type        = number
 }
 
 variable "frontend_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the frontend task"
   type        = number
 }
@@ -166,13 +179,13 @@ variable "celery_beat_command" {
 }
 
 variable "celery_beat_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "celery_beat_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
@@ -186,13 +199,13 @@ variable "default_celery_worker_command" {
 }
 
 variable "default_celery_worker_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "default_celery_worker_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
@@ -206,13 +219,13 @@ variable "api_command" {
 }
 
 variable "api_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "api_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
@@ -226,13 +239,13 @@ variable "migrate_command" {
 }
 
 variable "migrate_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "migrate_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
@@ -246,13 +259,13 @@ variable "collectstatic_command" {
 }
 
 variable "collectstatic_cpu" {
-  default     = 256
+  default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "collectstatic_memory" {
-  default     = 512
+  default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }

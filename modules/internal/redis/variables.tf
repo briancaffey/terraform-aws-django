@@ -42,6 +42,11 @@ variable "log_stream_prefix" {
   description = "Name of the CloudWatch Logs stream"
 }
 
+variable "log_retention_in_days" {
+  default = 1
+  type    = number
+}
+
 variable "name" {
   type        = string
   description = "Name to use for container"
@@ -70,5 +75,10 @@ variable "execution_role_arn" {
 
 variable "task_role_arn" {
   description = "Task Role ARN"
+  type        = string
+}
+
+variable "ecs_sg_id" {
+  description = "ECS Security Group ID"
   type        = string
 }

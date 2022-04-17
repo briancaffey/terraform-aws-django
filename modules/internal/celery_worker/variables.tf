@@ -8,18 +8,8 @@ variable "ecs_cluster_id" {
   type        = string
 }
 
-variable "ecs_service_iam_role_arn" {
-  description = "ECS Service IAM Role ARN"
-  type        = string
-}
-
 variable "task_role_arn" {
   description = "Task Role ARN"
-  type        = string
-}
-
-variable "env" {
-  description = "Environment"
   type        = string
 }
 
@@ -79,4 +69,13 @@ variable "memory" {
 variable "ecs_sg_id" {
   description = "ECS Security Group ID"
   type        = string
+}
+
+variable "execution_role_arn" {
+  description = "Execution Role ARN"
+  type        = string
+}
+
+variable "private_subnets" {
+  type = list(string)
 }
