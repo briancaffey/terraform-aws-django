@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.5.0...v0.6.0) (2022-04-17)
+
+
+### Features
+
+* **refactor:** refactored root level config into ad-hoc config ([#17](https://github.com/briancaffey/terraform-aws-django/issues/17)) ([01e96db](https://github.com/briancaffey/terraform-aws-django/commit/01e96dba8b73bd353e0fb4e1dbd36ed5e3057ae9))
+
 ## [0.5.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.4.0...v0.5.0) (2022-03-26)
 
 
