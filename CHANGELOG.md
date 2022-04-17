@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.6.0...v0.6.1) (2022-04-17)
+
+
+### Bug Fixes
+
+* **ad-hoc:** fix inputs and outputs for ad hoc environments ([fe4f5c4](https://github.com/briancaffey/terraform-aws-django/commit/fe4f5c420e12a588909a15b35e703178c5fe662f))
+
 ## [0.6.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.5.0...v0.6.0) (2022-04-17)
 
 
