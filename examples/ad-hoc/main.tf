@@ -18,6 +18,7 @@ provider "aws" {
 }
 
 # shared resources
+# see https://github.com/briancaffey/terraform-aws-ad-hoc-environments
 
 data "terraform_remote_state" "shared" {
   backend = "s3"

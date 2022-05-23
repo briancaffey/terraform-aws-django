@@ -16,7 +16,7 @@ examples-ad-hoc-init:
 	terraform -chdir=examples/ad-hoc init -backend-config=backend.config
 
 examples-ad-hoc-plan:
-	terraform -chdir=examples/ad-hoc init
+	terraform -chdir=examples/ad-hoc plan
 
 examples-ad-hoc-apply:
 	terraform -chdir=examples/ad-hoc apply
