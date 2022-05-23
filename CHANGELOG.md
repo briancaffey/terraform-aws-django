@@ -1,7 +1,14 @@
 # Changelog
 
-### [0.6.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.6.0...v0.6.1) (2022-04-17)
 
+## [0.7.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.6.0...v0.7.0) (2022-05-23)
+
+
+### Features
+
+* **fargate spot:** add fargate spot capacity provider ([f3c2257](https://github.com/briancaffey/terraform-aws-django/commit/f3c2257d23ef843412e24e41224515f9d518a549))
+
+### [0.6.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.6.0...v0.6.1) (2022-04-17)
 
 ### Bug Fixes
 
