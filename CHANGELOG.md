@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.8.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.8.0...v0.8.1) (2022-05-24)
+
+
+### Bug Fixes
+
+* **fargate:** removed launch_type since capacity_provider_strategy is specified ([77eba10](https://github.com/briancaffey/terraform-aws-django/commit/77eba10eae2721602cc873293e87480f0c9c0279))
+
 ## [0.8.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.7.0...v0.8.0) (2022-05-24)
 
 
