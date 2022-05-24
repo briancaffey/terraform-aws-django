@@ -64,7 +64,6 @@ resource "aws_service_discovery_service" "this" {
 resource "aws_ecs_service" "this" {
   name            = "${terraform.workspace}-${var.name}"
   cluster         = var.ecs_cluster_id
-  launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
 
