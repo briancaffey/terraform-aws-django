@@ -61,13 +61,13 @@ variable "region" {
 
 variable "cpu" {
   default     = 1024
-  description = "CPU to allocate to container"
+  description = "CPU for ECS task"
   type        = number
 }
 
 variable "memory" {
   default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
+  description = "Amount (in MiB) of memory used by ECS task"
   type        = number
 }
 
