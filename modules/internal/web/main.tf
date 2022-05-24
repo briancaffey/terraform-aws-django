@@ -50,6 +50,16 @@ resource "aws_ecs_service" "this" {
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = var.app_count
 
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 100
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    weight            = 0
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = var.name

@@ -44,6 +44,16 @@ resource "aws_ecs_service" "this" {
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = var.app_count
 
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 100
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    weight            = 0
+  }
+
   network_configuration {
     assign_public_ip = true
     security_groups  = [var.ecs_sg_id]
