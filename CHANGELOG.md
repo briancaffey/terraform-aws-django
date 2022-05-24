@@ -1,6 +1,16 @@
 # Changelog
 
 
+## [0.8.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.7.0...v0.8.0) (2022-05-24)
+
+
+### Features
+
+* **docs:** update readme ([ed4455c](https://github.com/briancaffey/terraform-aws-django/commit/ed4455cbca7264a1d4d5115d3a997b71af43bea5))
+* **docs:** update readme with links ([8fea9ff](https://github.com/briancaffey/terraform-aws-django/commit/8fea9ffb2ce5ac1f402840b153130840a7e5cf1d))
+* **fargate spot:** add capacity provider strategy for each service ([403d268](https://github.com/briancaffey/terraform-aws-django/commit/403d26863e609a27c4eddee257e4518528b5c372))
+* **fargate:** use fargate launch type for management command module ([8a247e6](https://github.com/briancaffey/terraform-aws-django/commit/8a247e674d2ae002bf696fcedfa5cc5847c4a24e))
+
 ## [0.7.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.6.0...v0.7.0) (2022-05-23)
 
 
