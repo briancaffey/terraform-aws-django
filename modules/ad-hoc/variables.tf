@@ -96,15 +96,6 @@ variable "domain_name" {
   type        = string
 }
 
-##############################################################################
-# ECS / ECR
-##############################################################################
-
-variable "ecs_cluster_name" {
-  description = "Name of the ECS cluster"
-  default     = "ecs-dev-cluster"
-}
-
 variable "ecr_be_repo_url" {
   description = "URL of the ECR repository that contains the backend image. Take from output value of bootstrap"
 }
