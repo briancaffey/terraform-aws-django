@@ -53,5 +53,5 @@ module "main" {
   ecr_be_repo_url = var.ecr_be_repo_url
   ecr_fe_repo_url = var.ecr_fe_repo_url
   region          = var.region
-  domain_name       = var.domain_name
+  domain_name     = var.domain_name
 }
