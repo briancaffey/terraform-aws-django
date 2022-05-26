@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.9.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.8.1...v0.9.0) (2022-05-26)
+
+
+### Features
+
+* **domain name:** replace zone name and record name with domain name, remove frontend_url, add postgres name env var, domain name env var ([c95ac70](https://github.com/briancaffey/terraform-aws-django/commit/c95ac704d717544cec7773f88c39ce31be30967a))
+
 ### [0.8.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.8.0...v0.8.1) (2022-05-24)
 
 
