@@ -91,13 +91,8 @@ variable "region" {
 # Route 53
 ##############################################################################
 
-variable "zone_name" {
-  description = "Name of the hosted zone. Last character should be a period (e.g. example.com.)"
-  type        = string
-}
-
-variable "record_name" {
-  description = "Name of the record to create (e.g. app.example.com)"
+variable "domain_name" {
+  description = "Domain name to be used for Route 53 records (e.g. example.com)"
   type        = string
 }
 
@@ -268,15 +263,6 @@ variable "collectstatic_memory" {
   default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number
-}
-
-##############################################################################
-# Frontend
-##############################################################################
-
-variable "frontend_url" {
-  type        = string
-  description = "Frontend URL"
 }
 
 ##############################################################################

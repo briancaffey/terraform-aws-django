@@ -12,7 +12,7 @@ module "ecs" {
 
 module "s3" {
   source        = "../internal/s3"
-  bucket_name   = "${replace(var.record_name, ".", "-")}-${terraform.workspace}-bucket"
+  bucket_name   = "${replace(var.domain_name, ".", "-")}-${terraform.workspace}-bucket"
   force_destroy = var.force_destroy
 }
 
@@ -42,9 +42,8 @@ module "redis" {
 
 module "route53" {
   source       = "../internal/route53"
-  zone_name    = var.zone_name
-  record_name  = var.record_name
   alb_dns_name = var.alb_dns_name
+  domain_name  = var.domain_name
 }
 
 ###############################################################################
@@ -62,6 +61,10 @@ locals {
       value = var.rds_address
     },
     {
+      name  = "POSTGRES_NAME"
+      value = "${terraform.workspace}-db"
+    },
+    {
       name  = "DJANGO_SETTINGS_MODULE"
       value = var.django_settings_module
     },
@@ -71,7 +74,11 @@ locals {
     },
     {
       name  = "FRONTEND_URL"
-      value = var.frontend_url
+      value = "https://${terraform.workspace}.${var.domain_name}"
+    },
+    {
+      name  = "DOMAIN_NAME"
+      value = var.domain_name
     }
   ]
   be_image = "${var.ecr_be_repo_url}:${var.be_image_tag}"

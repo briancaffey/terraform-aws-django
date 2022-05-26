@@ -14,13 +14,8 @@ variable "key" {
 # Route 53
 ##############################################################################
 
-variable "zone_name" {
-  description = "Name of the hosted zone. Last character should be a period (e.g. example.com.)"
-  type        = string
-}
-
-variable "record_name" {
-  description = "Name of the record to create (e.g. app.example.com)"
+variable "domain_name" {
+  description = "Domain name (e.g. example.com)"
   type        = string
 }
 
@@ -45,11 +40,6 @@ variable "fe_image_tag" {
 ##############################################################################
 # Frontend
 ##############################################################################
-
-variable "frontend_url" {
-  type        = string
-  description = "Frontend URL"
-}
 
 variable "extra_env_vars" {
   description = "User-defined environment variables to pass to the backend service and task containers (api, worker, migrate, etc.)"
