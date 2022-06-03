@@ -125,3 +125,8 @@ variable "ecs_sg_id" {
 variable "private_subnets" {
   type = list(string)
 }
+
+variable "host_name" {
+  description = "Hostname to use for setting up listener rules for the service"
+  type        = string
+}

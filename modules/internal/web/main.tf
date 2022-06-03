@@ -107,6 +107,13 @@ resource "aws_lb_listener_rule" "this" {
       values = var.path_patterns
     }
   }
+
+  condition {
+    host_header {
+      values = [var.host_name]
+    }
+  }
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn

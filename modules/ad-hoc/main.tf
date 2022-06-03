@@ -81,8 +81,9 @@ locals {
       value = var.domain_name
     }
   ]
-  be_image = "${var.ecr_be_repo_url}:${var.be_image_tag}"
-  fe_image = "${var.ecr_fe_repo_url}:${var.fe_image_tag}"
+  be_image  = "${var.ecr_be_repo_url}:${var.be_image_tag}"
+  fe_image  = "${var.ecr_fe_repo_url}:${var.fe_image_tag}"
+  host_name = "${terraform.workspace}.${var.domain_name}"
 }
 
 ###############################################################################
@@ -111,6 +112,7 @@ module "api" {
   listener_arn       = var.listener_arn
   vpc_id             = var.vpc_id
   private_subnets    = var.private_subnets
+  host_name          = local.host_name
 }
 
 ###############################################################################
@@ -139,6 +141,7 @@ module "web-ui" {
   listener_arn       = var.listener_arn
   vpc_id             = var.vpc_id
   private_subnets    = var.private_subnets
+  host_name          = local.host_name
 
   # this is needed in order to for the listener rule priorities to work correctly
   # without explicitly being set
