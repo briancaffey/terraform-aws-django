@@ -101,7 +101,6 @@ resource "aws_lb_target_group" "this" {
 
 resource "aws_lb_listener_rule" "this" {
   listener_arn = var.listener_arn
-  priority     = var.priority
 
   condition {
     path_pattern {

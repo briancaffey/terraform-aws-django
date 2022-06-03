@@ -86,35 +86,6 @@ locals {
 }
 
 ###############################################################################
-# Frontend ECS Service
-###############################################################################
-
-module "web-ui" {
-  source             = "../internal/web"
-  name               = "web-ui"
-  ecs_cluster_id     = module.ecs.cluster_id
-  ecs_sg_id          = var.ecs_sg_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
-  command            = var.frontend_command
-  env_vars           = []
-  image              = local.fe_image
-  alb_default_tg_arn = var.alb_default_tg_arn
-  log_group_name     = "/ecs/${terraform.workspace}/web-ui"
-  log_stream_prefix  = "web-ui"
-  region             = var.region
-  cpu                = var.api_cpu
-  memory             = var.api_memory
-  port               = 80
-  path_patterns      = ["/*"]
-  health_check_path  = "/"
-  listener_arn       = var.listener_arn
-  vpc_id             = var.vpc_id
-  private_subnets    = var.private_subnets
-  priority           = 2
-}
-
-###############################################################################
 # Gunicorn ECS Service
 ###############################################################################
 
@@ -140,7 +111,38 @@ module "api" {
   listener_arn       = var.listener_arn
   vpc_id             = var.vpc_id
   private_subnets    = var.private_subnets
-  priority           = 1
+}
+
+###############################################################################
+# Frontend ECS Service
+###############################################################################
+
+module "web-ui" {
+  source             = "../internal/web"
+  name               = "web-ui"
+  ecs_cluster_id     = module.ecs.cluster_id
+  ecs_sg_id          = var.ecs_sg_id
+  task_role_arn      = var.task_role_arn
+  execution_role_arn = var.execution_role_arn
+  command            = var.frontend_command
+  env_vars           = []
+  image              = local.fe_image
+  alb_default_tg_arn = var.alb_default_tg_arn
+  log_group_name     = "/ecs/${terraform.workspace}/web-ui"
+  log_stream_prefix  = "web-ui"
+  region             = var.region
+  cpu                = var.api_cpu
+  memory             = var.api_memory
+  port               = 80
+  path_patterns      = ["/*"]
+  health_check_path  = "/"
+  listener_arn       = var.listener_arn
+  vpc_id             = var.vpc_id
+  private_subnets    = var.private_subnets
+
+  # this is needed in order to for the listener rule priorities to work correctly
+  # without explicitly being set
+  depends_on = [module.web-ui]
 }
 
 ###############################################################################

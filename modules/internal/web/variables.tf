@@ -83,12 +83,6 @@ variable "port" {
   type        = number
 }
 
-variable "priority" {
-  description = "Priority for the listener rule"
-  type        = number
-}
-
-
 variable "path_patterns" {
   description = "Path patterns to match"
   type        = list(string)
