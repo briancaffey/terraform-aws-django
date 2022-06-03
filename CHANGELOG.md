@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.9.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.1...v0.9.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **ecs:** fix ecs service names to all use dashes instead of underscores ([021fe6e](https://github.com/briancaffey/terraform-aws-django/commit/021fe6e46fdb3d9b2e41a974839152c66acca4a2))
+
 ## [0.9.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.0...v0.9.1) (2022-06-03)
 
 
