@@ -8,6 +8,10 @@
 # Shared resources
 #################################################
 
+variable "shared_resources_workspace" {
+  type = string
+}
+
 # VPC
 
 variable "vpc_id" {
