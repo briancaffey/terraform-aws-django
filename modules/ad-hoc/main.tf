@@ -54,7 +54,7 @@ locals {
   env_vars = [
     {
       name  = "REDIS_SERVICE_HOST"
-      value = "${terraform.workspace}-redis.${terraform.shared_resources_workspace}-sd-ns"
+      value = "${terraform.workspace}-redis.${var.shared_resources_workspace}-sd-ns"
     },
     {
       name  = "POSTGRES_SERVICE_HOST"
