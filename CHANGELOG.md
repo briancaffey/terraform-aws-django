@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.9.6](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.5...v0.9.6) (2022-06-03)
+
+
+### Bug Fixes
+
+* **listener-rules:** add host_header on web module ([63bb16c](https://github.com/briancaffey/terraform-aws-django/commit/63bb16c73fb557fd22ff3f3396968c9cb44b71f0))
+* **listener-rules:** fix depends_on ([717fea7](https://github.com/briancaffey/terraform-aws-django/commit/717fea7215fcefd87cdfaa6105cf3a3f543bb59f))
+
 ## [0.9.5](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.4...v0.9.5) (2022-06-03)
 
 
