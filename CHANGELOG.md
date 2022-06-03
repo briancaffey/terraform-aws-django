@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.9.3](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.2...v0.9.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **redis:** use shared namespace for redis host address ([f171860](https://github.com/briancaffey/terraform-aws-django/commit/f171860fa0cbdcaf2bba54ddf7f1509160fd0d87))
+
 ## [0.9.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.1...v0.9.2) (2022-06-03)
 
 
