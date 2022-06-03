@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.9.4](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.3...v0.9.4) (2022-06-03)
+
+
+### Bug Fixes
+
+* **redis:** fix typo in redis service host ([d7cd2c2](https://github.com/briancaffey/terraform-aws-django/commit/d7cd2c2fffadd59039f9647613e18b642394fdaa))
+
 ## [0.9.3](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.2...v0.9.3) (2022-06-03)
 
 
