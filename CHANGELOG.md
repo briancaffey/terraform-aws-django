@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.9.5](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.4...v0.9.5) (2022-06-03)
+
+
+### Bug Fixes
+
+* **listener-rules:** remove priority setting and add depends_on so that priorities set explicitly ([7bde6f0](https://github.com/briancaffey/terraform-aws-django/commit/7bde6f044999d10b7f6c010f0a220985bfc31d8c))
+
 ## [0.9.4](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.3...v0.9.4) (2022-06-03)
 
 
