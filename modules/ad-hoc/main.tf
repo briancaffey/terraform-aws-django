@@ -142,7 +142,7 @@ module "web-ui" {
 
   # this is needed in order to for the listener rule priorities to work correctly
   # without explicitly being set
-  depends_on = [module.web-ui]
+  depends_on = [module.api]
 }
 
 ###############################################################################
