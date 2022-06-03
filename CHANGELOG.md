@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.9.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.0...v0.9.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **management-command:** add private subnets variable to management command module and add network configuration to output command ([3d36649](https://github.com/briancaffey/terraform-aws-django/commit/3d366495d184d4e0e6afbcef158942814511e10b))
+* **vars:** remove unused tf variable ecs_cluster_name ([96914f9](https://github.com/briancaffey/terraform-aws-django/commit/96914f95b7a0a8b96edf5d740aff5d0ec0f9360e))
+
 ## [0.9.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.8.1...v0.9.0) (2022-05-26)
 
 
