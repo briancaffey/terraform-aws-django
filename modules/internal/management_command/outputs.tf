@@ -7,7 +7,7 @@ output "task_execution_command" {
   value       = <<EOT
 START_TIME=$(date +%s000)
 
-TASK_ID=$(aws ecs run-task --cluster ${var.ecs_cluster_id} --task-definition ${aws_ecs_task_definition.this.arn} | jq -r '.tasks[0].taskArn')
+TASK_ID=$(aws ecs run-task --cluster ${var.ecs_cluster_id} --task-definition ${aws_ecs_task_definition.this.arn} --network-configuration "awsvpcConfiguration={subnets=[${join(",", var.private_subnets)}],securityGroups=[${var.ecs_sg_id}],assignPublicIp=ENABLED}" | jq -r '.tasks[0].taskArn')
 
 aws ecs wait tasks-stopped --tasks $TASK_ID --cluster ${var.ecs_cluster_id}
 

@@ -206,6 +206,7 @@ module "migrate" {
   region             = var.region
   cpu                = var.migrate_cpu
   memory             = var.migrate_memory
+  private_subnets    = var.private_subnets
 }
 
 ###############################################################################
@@ -227,4 +228,5 @@ module "collectstatic" {
   region             = var.region
   cpu                = var.collectstatic_cpu
   memory             = var.collectstatic_memory
+  private_subnets    = var.private_subnets
 }
