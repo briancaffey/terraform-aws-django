@@ -58,4 +58,8 @@ resource "aws_ecs_service" "this" {
     security_groups  = [var.ecs_sg_id]
     subnets          = var.private_subnets
   }
+
+  lifecycle {
+    ignore_changes = ["task_definition", "desired_count"]
+  }
 }
