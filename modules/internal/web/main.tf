@@ -44,10 +44,11 @@ resource "aws_ecs_task_definition" "this" {
 }
 
 resource "aws_ecs_service" "this" {
-  name            = "${terraform.workspace}-${var.name}"
-  cluster         = var.ecs_cluster_id
-  task_definition = aws_ecs_task_definition.this.arn
-  desired_count   = var.app_count
+  name                   = "${terraform.workspace}-${var.name}"
+  cluster                = var.ecs_cluster_id
+  enable_execute_command = true
+  task_definition        = aws_ecs_task_definition.this.arn
+  desired_count          = var.app_count
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
