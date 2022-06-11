@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.10.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.6...v0.10.0) (2022-06-11)
+
+
+### Features
+
+* **services:** add lifecycle settings to ecs services to ignore changes for task_definition and desired count ([0f4ad7f](https://github.com/briancaffey/terraform-aws-django/commit/0f4ad7f8136814ba8c132981f6d3923bc8218dad))
+
 ## [0.9.6](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.5...v0.9.6) (2022-06-03)
 
 
