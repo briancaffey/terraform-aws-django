@@ -6,7 +6,7 @@ output "alb_default_tg_arn" {
   value = aws_alb_target_group.default.arn
 }
 
-output "dns_name" {
+output "alb_dns_name" {
   value = aws_lb.this.dns_name
 }
 

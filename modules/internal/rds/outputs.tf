@@ -1,3 +1,3 @@
-output "postgres_service_host" {
+output "address" {
   value = aws_db_instance.this.address
 }

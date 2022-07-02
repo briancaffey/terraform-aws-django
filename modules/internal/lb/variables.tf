@@ -18,3 +18,7 @@ variable "vpc_id" {
   description = "ID of the VPC to create the ALB in"
   type        = string
 }
+
+variable "alb_sg_id" {
+  type = string
+}

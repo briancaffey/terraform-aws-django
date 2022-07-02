@@ -1,10 +1,10 @@
 resource "aws_elasticache_subnet_group" "this" {
-  name       = "elasticache-subnet-group"
+  name       = "${terraform.workspace}-elasticache-sng"
   subnet_ids = var.private_subnets
 }
 
 resource "aws_security_group" "redis" {
-  name        = "redis-security-group"
+  name        = "${terraform.workspace}-elasticache-sg"
   description = "Allows inbound access from ECS only"
   vpc_id      = var.vpc_id
 
@@ -24,7 +24,7 @@ resource "aws_security_group" "redis" {
 }
 
 resource "aws_elasticache_cluster" "this" {
-  cluster_id           = "${terraform.workspace}-redis-cluster"
+  cluster_id           = "${terraform.workspace}-elasticache-cluster"
   engine               = "redis"
   node_type            = "cache.t2.micro"
   num_cache_nodes      = 1

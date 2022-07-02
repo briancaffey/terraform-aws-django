@@ -1,14 +1,21 @@
 # RDS Security Group (traffic ECS -> RDS)
 resource "aws_security_group" "this" {
-  name        = "rds-security-group"
+  name        = "${terraform.workspace}-rds-security-group"
   description = "Allows inbound access from ECS only"
   vpc_id      = var.vpc_id
 
   ingress {
     protocol        = "tcp"
-    from_port       = "5432"
-    to_port         = "5432"
+    from_port       = var.port
+    to_port         = var.port
     security_groups = [var.ecs_sg_id]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = var.port
+    to_port     = var.port
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -20,18 +27,19 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name       = "main"
+  name       = "${terraform.workspace}-rds-subnet-group"
   subnet_ids = var.private_subnets
 }
 
+# RDS instance
 resource "aws_db_instance" "this" {
-  identifier              = "production"
+  identifier              = "${terraform.workspace}-rds"
   db_name                 = var.rds_db_name
   username                = var.rds_username
   password                = var.rds_password
-  port                    = "5432"
-  engine                  = "postgres"
-  engine_version          = "13.4"
+  port                    = var.port
+  engine                  = var.engine
+  engine_version          = var.engine_version
   instance_class          = var.rds_instance_class
   allocated_storage       = "20"
   storage_encrypted       = false

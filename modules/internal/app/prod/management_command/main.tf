@@ -20,7 +20,6 @@ resource "aws_ecs_task_definition" "this" {
       image       = var.image
       essential   = true
       links       = []
-      user        = "root" # needed to fix [Errno 13] Permission denied: 'celerybeat-schedule'
       environment = var.env_vars
       command     = var.command
       logConfiguration = {
@@ -35,31 +34,4 @@ resource "aws_ecs_task_definition" "this" {
   ])
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
-}
-
-resource "aws_ecs_service" "this" {
-  name            = "${terraform.workspace}-${var.name}"
-  cluster         = var.ecs_cluster_id
-  task_definition = aws_ecs_task_definition.this.arn
-  desired_count   = var.app_count
-
-  capacity_provider_strategy {
-    capacity_provider = "FARGATE_SPOT"
-    weight            = 100
-  }
-
-  capacity_provider_strategy {
-    capacity_provider = "FARGATE"
-    weight            = 0
-  }
-
-  network_configuration {
-    assign_public_ip = true
-    security_groups  = [var.ecs_sg_id]
-    subnets          = var.private_subnets
-  }
-
-  lifecycle {
-    ignore_changes = [task_definition, desired_count]
-  }
 }
