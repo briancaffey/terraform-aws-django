@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.12.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.11.0...v0.12.0) (2022-07-02)
+
+
+### Features
+
+* **production:** add modules and examples for production environments ([7eb0ab9](https://github.com/briancaffey/terraform-aws-django/commit/7eb0ab95595445eb6c80c4b150edc992ade1b485))
+
 ## [0.11.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.10.0...v0.11.0) (2022-06-11)
 
 
