@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.11.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.10.0...v0.11.0) (2022-06-11)
+
+
+### Features
+
+* **exec:** add enable_execute_command to service in web module ([cd882c1](https://github.com/briancaffey/terraform-aws-django/commit/cd882c11fa28fe68479a21e7b111cfce20c6dc6b))
+* **exec:** add output for ecs exec ([b5aa8bc](https://github.com/briancaffey/terraform-aws-django/commit/b5aa8bcb25a77c96e92e660c7ca9b1824a1da218))
+
 ## [0.10.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.9.6...v0.10.0) (2022-06-11)
 
 
