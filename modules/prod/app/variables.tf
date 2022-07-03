@@ -231,10 +231,3 @@ variable "backend_update_memory" {
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
-
-# misc
-
-variable "frontend_url" {
-  type        = string
-  description = "URL of the frontend SPA"
-}

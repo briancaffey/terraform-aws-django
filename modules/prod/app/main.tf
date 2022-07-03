@@ -44,7 +44,7 @@ locals {
     },
     {
       name  = "FRONTEND_URL"
-      value = var.frontend_url
+      value = "https://${terraform.workspace}.${var.domain_name}"
     },
     {
       name  = "DOMAIN_NAME"
