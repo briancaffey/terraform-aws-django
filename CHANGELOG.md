@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.12.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.0...v0.12.1) (2022-07-03)
+
+
+### Bug Fixes
+
+* **frontend_url:** remove frontend_url since it is not needed ([fa1052d](https://github.com/briancaffey/terraform-aws-django/commit/fa1052d4ba1180c81776254775fdaec98b0a6cec))
+
 ## [0.12.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.11.0...v0.12.0) (2022-07-02)
 
 
