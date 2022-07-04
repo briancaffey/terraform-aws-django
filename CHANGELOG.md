@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.12.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.1...v0.12.2) (2022-07-04)
+
+
+### Bug Fixes
+
+* **tf:** do not use fargate spot for production module ([79675cf](https://github.com/briancaffey/terraform-aws-django/commit/79675cf92bf61a74cb9dbaa5c6dd565a50927652))
+
 ## [0.12.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.0...v0.12.1) (2022-07-03)
 
 
