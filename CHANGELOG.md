@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.15.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.14.0...v0.15.0) (2022-07-04)
+
+
+### Features
+
+* **backend_update:** add backend update command module to prod and ad hoc modules and associated outputs ([b3ce9a3](https://github.com/briancaffey/terraform-aws-django/commit/b3ce9a35c3d2e3367ec0f8777411f01829660b98))
+
 ## [0.14.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.13.0...v0.14.0) (2022-07-04)
 
 
