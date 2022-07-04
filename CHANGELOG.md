@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [0.13.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.2...v0.13.0) (2022-07-04)
+
+
+### Features
+
+* **ad hoc base:** add ad hoc base module ([f77895e](https://github.com/briancaffey/terraform-aws-django/commit/f77895e3810affe82442a3abad0767b21d076184))
+
+
+### Bug Fixes
+
+* **fargate:** remove weight for fargate spot on all production modules ([57725a8](https://github.com/briancaffey/terraform-aws-django/commit/57725a8bf798d903d1b93bd14648ce6562de26e6))
+* **lb:** remove hard-coded name from lb sg ([bc1e2ca](https://github.com/briancaffey/terraform-aws-django/commit/bc1e2cab020b84363206d8e7a6436cef9dd7f1c5))
+
 ## [0.12.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.1...v0.12.2) (2022-07-04)
 
 
