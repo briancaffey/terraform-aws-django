@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.14.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.13.0...v0.14.0) (2022-07-04)
+
+
+### Features
+
+* **ad hoc:** move ad hoc app module to nested folder ([03b37ec](https://github.com/briancaffey/terraform-aws-django/commit/03b37ec0c17c199f0e3eac1119ac855c08c9c7a7))
+
 ## [0.12.3](https://github.com/briancaffey/terraform-aws-django/compare/v0.12.2...v0.12.3) (2022-07-04)
 
 
