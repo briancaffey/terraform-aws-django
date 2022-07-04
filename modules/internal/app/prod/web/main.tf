@@ -52,12 +52,12 @@ resource "aws_ecs_service" "this" {
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
-    weight            = 100
+    weight            = 0
   }
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE"
-    weight            = 0
+    weight            = 100
   }
 
   load_balancer {
