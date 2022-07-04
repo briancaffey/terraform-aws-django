@@ -1,5 +1,5 @@
 resource "aws_security_group" "this" {
-  name        = "load_balancer_security_group"
+  name        = "${terraform.workspace}-lb-sg"
   description = "Controls access to the ALB"
   vpc_id      = var.vpc_id
 
