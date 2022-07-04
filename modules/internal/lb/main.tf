@@ -1,35 +1,8 @@
-resource "aws_security_group" "this" {
-  name        = "${terraform.workspace}-lb-sg"
-  description = "Controls access to the ALB"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 resource "aws_lb" "this" {
   name               = "${terraform.workspace}-alb"
   load_balancer_type = "application"
   internal           = false
-  security_groups    = [aws_security_group.this.id]
+  security_groups    = [var.alb_sg_id]
   subnets            = var.public_subnets
   timeouts {
     create = "30m"
@@ -37,7 +10,7 @@ resource "aws_lb" "this" {
   }
 }
 
-resource "aws_alb_target_group" "default" {
+resource "aws_alb_target_group" "this" {
   name     = "${terraform.workspace}-default-tg"
   port     = 80
   protocol = "HTTP"
@@ -58,7 +31,7 @@ resource "aws_alb_listener" "http" {
   load_balancer_arn = aws_lb.this.id
   port              = "80"
   protocol          = "HTTP"
-  depends_on        = [aws_alb_target_group.default]
+  depends_on        = [aws_alb_target_group.this]
 
   default_action {
     type = "redirect"
@@ -77,7 +50,7 @@ resource "aws_alb_listener" "https" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = var.certificate_arn
-  depends_on        = [aws_alb_target_group.default]
+  depends_on        = [aws_alb_target_group.this]
 
   default_action {
     type = "fixed-response"
