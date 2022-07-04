@@ -3,7 +3,7 @@
 ###############################################################################
 
 module "ecs" {
-  source = "../internal/ecs"
+  source = "../../internal/ecs"
 }
 
 ###############################################################################
@@ -11,7 +11,7 @@ module "ecs" {
 ###############################################################################
 
 module "s3" {
-  source        = "../internal/s3"
+  source        = "../../internal/s3"
   bucket_name   = "${replace(var.domain_name, ".", "-")}-${terraform.workspace}-bucket"
   force_destroy = var.force_destroy
 }
@@ -21,7 +21,7 @@ module "s3" {
 ###############################################################################
 
 module "redis" {
-  source                         = "../internal/redis"
+  source                         = "../../internal/redis"
   name                           = "redis"
   vpc_id                         = var.vpc_id
   task_role_arn                  = var.task_role_arn
@@ -41,7 +41,7 @@ module "redis" {
 ###############################################################################
 
 module "route53" {
-  source       = "../internal/route53"
+  source       = "../../internal/route53"
   alb_dns_name = var.alb_dns_name
   domain_name  = var.domain_name
 }
@@ -91,7 +91,7 @@ locals {
 ###############################################################################
 
 module "api" {
-  source             = "../internal/web"
+  source             = "../../internal/web"
   name               = "gunicorn"
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = var.task_role_arn
@@ -120,7 +120,7 @@ module "api" {
 ###############################################################################
 
 module "web-ui" {
-  source             = "../internal/web"
+  source             = "../../internal/web"
   name               = "web-ui"
   ecs_cluster_id     = module.ecs.cluster_id
   ecs_sg_id          = var.ecs_sg_id
@@ -153,7 +153,7 @@ module "web-ui" {
 ###############################################################################
 
 module "default_celery_worker" {
-  source             = "../internal/celery_worker"
+  source             = "../../internal/celery_worker"
   name               = "default"
   ecs_sg_id          = var.ecs_sg_id
   ecs_cluster_id     = module.ecs.cluster_id
@@ -175,7 +175,7 @@ module "default_celery_worker" {
 ###############################################################################
 
 module "celery_beat" {
-  source             = "../internal/celery_beat"
+  source             = "../../internal/celery_beat"
   name               = "beat"
   ecs_cluster_id     = module.ecs.cluster_id
   ecs_sg_id          = var.ecs_sg_id
@@ -193,45 +193,23 @@ module "celery_beat" {
 }
 
 ###############################################################################
-# Migrate - Database Migrate Task Definition
+# Backend update commands
 ###############################################################################
 
-module "migrate" {
-  name               = "migrate"
-  source             = "../internal/management_command"
+module "backend_update" {
+  name               = "backend_update"
+  source             = "../../internal/app/prod/management_command"
   ecs_cluster_id     = module.ecs.cluster_id
   ecs_sg_id          = var.ecs_sg_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
-  command            = var.migrate_command
+  command            = var.backend_update_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/migrate"
-  log_stream_prefix  = "migrate"
+  log_group_name     = "/ecs/${terraform.workspace}/backend_update"
+  log_stream_prefix  = "backend_update"
   region             = var.region
-  cpu                = var.migrate_cpu
-  memory             = var.migrate_memory
-  private_subnets    = var.private_subnets
-}
-
-###############################################################################
-# collectstatic - collectstatic task
-###############################################################################
-
-module "collectstatic" {
-  name               = "collectstatic"
-  source             = "../internal/management_command"
-  ecs_cluster_id     = module.ecs.cluster_id
-  ecs_sg_id          = var.ecs_sg_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
-  command            = var.collectstatic_command
-  env_vars           = concat(local.env_vars, var.extra_env_vars)
-  image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/collectstatic"
-  log_stream_prefix  = "collectstatic"
-  region             = var.region
-  cpu                = var.collectstatic_cpu
-  memory             = var.collectstatic_memory
+  cpu                = var.backend_update_cpu
+  memory             = var.backend_update_memory
   private_subnets    = var.private_subnets
 }

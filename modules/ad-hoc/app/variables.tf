@@ -220,41 +220,21 @@ variable "api_memory" {
   type        = number
 }
 
-# migrate
+# backend_update commands (migrate, collectstatic)
 
-variable "migrate_command" {
-  description = "Command used to run database migrations"
-  default     = ["python", "manage.py", "migrate"]
+variable "backend_update_command" {
+  description = "Command used to run database migrations and collectstatic"
+  default     = ["python", "manage.py", "pre_update"]
   type        = list(string)
 }
 
-variable "migrate_cpu" {
+variable "backend_update_cpu" {
   default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
-variable "migrate_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
-  type        = number
-}
-
-# collectstatic
-
-variable "collectstatic_command" {
-  description = "Command used to run the collectstatic command"
-  default     = ["python", "manage.py", "collectstatic", "--noinput"]
-  type        = list(string)
-}
-
-variable "collectstatic_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container"
-  type        = number
-}
-
-variable "collectstatic_memory" {
+variable "backend_update_memory" {
   default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number

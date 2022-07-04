@@ -1,9 +1,5 @@
-output "migrate_command" {
-  value = module.migrate.task_execution_command
-}
-
-output "collectstatic_command" {
-  value = module.collectstatic.task_execution_command
+output "backend_update_command" {
+  value = module.backend_update.task_execution_command
 }
 
 output "ecs_exec_command" {
