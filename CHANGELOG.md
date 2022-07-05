@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.15.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.0...v0.15.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* **iam:** fix iam permissions for collectstatic ([9450b22](https://github.com/briancaffey/terraform-aws-django/commit/9450b22e0530760931743989f9e9a7b743b5e64c))
+* **iam:** fix s3 permissions for s3 access ([a37877c](https://github.com/briancaffey/terraform-aws-django/commit/a37877c4e4f1c701fe8f2db861012d66ea932b3e))
+
 ## [0.15.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.14.0...v0.15.0) (2022-07-04)
 
 
