@@ -61,8 +61,8 @@ locals {
       value = var.domain_name
     }
   ]
-  be_image = "${var.ecr_be_repo_url}:${var.be_image_tag}"
-  fe_image = "${var.ecr_fe_repo_url}:${var.fe_image_tag}"
+  be_image  = "${var.ecr_be_repo_url}:${var.be_image_tag}"
+  fe_image  = "${var.ecr_fe_repo_url}:${var.fe_image_tag}"
   host_name = "${terraform.workspace}.${var.domain_name}"
 }
 

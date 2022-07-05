@@ -72,7 +72,7 @@ resource "aws_iam_role_policy" "ecs_task" {
     Statement = [
       {
         Effect   = "Allow"
-        Action   = ["s3:*"] # TODO: tighten this down
+        Action   = ["s3:*"]                               # TODO: tighten this down
         Resource = ["arn:aws:s3:::*", "arn:aws:s3:::*/*"] # TODO: tighten this down
       },
       {

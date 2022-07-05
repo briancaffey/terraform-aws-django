@@ -40,6 +40,6 @@ module "main" {
   ecr_fe_repo_url = var.ecr_fe_repo_url
 
   frontend_url = var.frontend_url
-  domain_name = var.domain_name
+  domain_name  = var.domain_name
   be_image_tag = var.be_image_tag
 }
