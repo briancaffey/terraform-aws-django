@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.15.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.1...v0.15.2) (2022-07-05)
+
+
+### Bug Fixes
+
+* **iam:** fix s3 permissions for s3 access use arn format in resource for s3 policy ([46530d0](https://github.com/briancaffey/terraform-aws-django/commit/46530d00c08ce0942eba792fd3ee6a520c0ff299))
+
 ## [0.15.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.0...v0.15.1) (2022-07-05)
 
 
