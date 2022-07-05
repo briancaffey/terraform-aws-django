@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.16.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.2...v0.16.0) (2022-07-05)
+
+
+### Features
+
+* **s3:** add s3 module to prod app module ([ba8a460](https://github.com/briancaffey/terraform-aws-django/commit/ba8a46056652a015154afba58542f71879485574))
+
 ## [0.15.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.1...v0.15.2) (2022-07-05)
 
 
