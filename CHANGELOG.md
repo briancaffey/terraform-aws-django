@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.16.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.16.0...v0.16.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* **fmt:** format terraform code ([1999f67](https://github.com/briancaffey/terraform-aws-django/commit/1999f67fda24d7eccd108569b3cb9a3b13870886))
+
 ## [0.16.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.15.2...v0.16.0) (2022-07-05)
 
 
