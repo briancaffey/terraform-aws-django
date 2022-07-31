@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.18.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.18.0...v0.18.1) (2022-07-31)
+
+
+### Bug Fixes
+
+* change public to private for subnet variable ([6a69fba](https://github.com/briancaffey/terraform-aws-django/commit/6a69fbaa1f9f597b8e480d9fce6de977a6060902))
+* remove ssh command output ([f0282f8](https://github.com/briancaffey/terraform-aws-django/commit/f0282f8b77a295c4b18d2cf712c197a9a00b8078))
+
 ## [0.18.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.17.0...v0.18.0) (2022-07-31)
 
 
