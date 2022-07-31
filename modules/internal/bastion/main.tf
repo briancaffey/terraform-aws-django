@@ -17,8 +17,8 @@ data "aws_ami" "amazon-linux-2" {
 }
 
 resource "aws_iam_policy" "this" {
-  name = "${terraform.workspace}-iam-policy"
-  path = "/"
+  name        = "${terraform.workspace}-iam-policy"
+  path        = "/"
   description = "Policy for ${terraform.workspace} Bastion"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -55,8 +55,8 @@ resource "aws_iam_role" "this" {
 
 
 resource "aws_iam_policy_attachment" "this" {
-  name = "${terraform.workspace}-iam-policy-attachment"
-  roles = [aws_iam_role.this.name]
+  name       = "${terraform.workspace}-iam-policy-attachment"
+  roles      = [aws_iam_role.this.name]
   policy_arn = aws_iam_policy.this.arn
 }
 
