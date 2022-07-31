@@ -68,11 +68,3 @@ output "bastion_public_ip" {
   value       = module.bastion.public_ip
   description = "bastion host public ip"
 }
-
-output "ssh_command" {
-  value = <<EOT
-ssh -o StrictHostKeyChecking=no -t -t  \
-    -i ~/.ssh/${var.key_name}.pem "ec2-user@${module.bastion.public_ip}" \
-    -L "5432:${module.rds.address}:5432" &
-EOT
-}
