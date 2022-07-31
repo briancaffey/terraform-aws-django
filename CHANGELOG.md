@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.17.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.16.1...v0.17.0) (2022-07-31)
+
+
+### Features
+
+* **bastion:** update bastion host with role and changed subnets ([c768d1d](https://github.com/briancaffey/terraform-aws-django/commit/c768d1de56c54563a349b35233e5c7b1d82f777e))
+
+
+### Bug Fixes
+
+* **fmt:** format terraform code ([6f32b48](https://github.com/briancaffey/terraform-aws-django/commit/6f32b483abfbb6983137d5dd4155ac6c0b8c540f))
+
 ## [0.16.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.16.0...v0.16.1) (2022-07-05)
 
 
