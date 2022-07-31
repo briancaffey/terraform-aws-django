@@ -71,7 +71,7 @@ resource "aws_instance" "this" {
   instance_type               = var.instance_type
   iam_instance_profile        = aws_iam_instance_profile.this.name
   vpc_security_group_ids      = [var.ecs_sg_id]
-  subnet_id                   = var.public_subnets[0]
+  subnet_id                   = var.private_subnets[0]
   user_data                   = <<EOF
     #!/bin/bash
     yum update -y
