@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.18.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.17.0...v0.18.0) (2022-07-31)
+
+
+### Features
+
+* remove key pair ([a90aa2b](https://github.com/briancaffey/terraform-aws-django/commit/a90aa2bd8698a2373b8c1365b2945393ed9796e6))
+
 ## [0.17.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.16.1...v0.17.0) (2022-07-31)
 
 
