@@ -83,8 +83,7 @@ module "rds" {
 module "bastion" {
   source         = "../../internal/bastion"
   vpc_id         = module.vpc.vpc_id
-  key_name       = var.key_name
   alb_sg_id      = module.sg.alb_sg_id
   ecs_sg_id      = module.sg.ecs_sg_id
-  public_subnets = module.vpc.public_subnets
+  public_subnets = module.vpc.private_subnets
 }
