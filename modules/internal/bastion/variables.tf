@@ -11,10 +11,6 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "key_name" {
-  type = string
-}
-
 variable "alb_sg_id" {
   type = string
 }

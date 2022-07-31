@@ -69,7 +69,6 @@ resource "aws_instance" "this" {
   ami                         = data.aws_ami.amazon-linux-2.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
-  key_name                    = var.key_name
   iam_instance_profile        = aws_iam_instance_profile.this.name
   vpc_security_group_ids      = [var.ecs_sg_id]
   subnet_id                   = var.public_subnets[0]
