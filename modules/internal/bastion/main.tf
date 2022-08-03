@@ -72,7 +72,7 @@ resource "aws_instance" "this" {
   iam_instance_profile        = aws_iam_instance_profile.this.name
   vpc_security_group_ids      = [var.ecs_sg_id]
   subnet_id                   = var.private_subnets[0]
-  user_data                   = templatefile("${path.module}/cloud-init.yml.tftpl", { value = "abc123"})
+  user_data                   = templatefile("${path.module}/cloud-init.yml.tftpl", { rds_address = var.rds_address })
   tags = {
     Name = "${terraform.workspace}-bastion"
   }

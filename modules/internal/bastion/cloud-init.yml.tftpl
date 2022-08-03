@@ -4,6 +4,21 @@ packages:
   - postgresql
 write_files:
   - content: |
-      # this is a test
-      # value: ${value}
-    path: /etc/test.txt
+      # /etc/systemd/system/socat-forwarder.service
+      [Unit]
+      Description=socat forwarder
+      After=socat-forwarder.service
+      Requires=socat-forwarder.service
+
+      [Service]
+      Type=simple
+      StandardOutput=syslog
+      StandardError=syslog
+      SyslogIdentifier=socat-forwarder
+
+      ExecStart=socat -d -d TCP4-LISTEN:5432,fork TCP4:${rds_address}:5432
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    path: /etc/systemd/system/socat-forwarder.service

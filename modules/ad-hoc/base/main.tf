@@ -86,4 +86,5 @@ module "bastion" {
   alb_sg_id       = module.sg.alb_sg_id
   ecs_sg_id       = module.sg.ecs_sg_id
   private_subnets = module.vpc.private_subnets
+  rds_address     = module.rds.address
 }

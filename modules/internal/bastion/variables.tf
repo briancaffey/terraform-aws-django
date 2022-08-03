@@ -18,3 +18,7 @@ variable "alb_sg_id" {
 variable "ecs_sg_id" {
   type = string
 }
+
+variable "rds_address" {
+  type = string
+}
