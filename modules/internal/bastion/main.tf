@@ -72,11 +72,7 @@ resource "aws_instance" "this" {
   iam_instance_profile        = aws_iam_instance_profile.this.name
   vpc_security_group_ids      = [var.ecs_sg_id]
   subnet_id                   = var.private_subnets[0]
-  user_data                   = <<EOF
-    #!/bin/bash
-    yum update -y
-    yum install -y postgresql mysql
-  EOF
+  user_data                   = templatefile("${path.module}/cloud-init.yml.tftpl", { value = "abc123"})
   tags = {
     Name = "${terraform.workspace}-bastion"
   }

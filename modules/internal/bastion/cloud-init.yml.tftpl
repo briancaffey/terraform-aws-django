@@ -1,0 +1,9 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - postgresql
+write_files:
+  - content: |
+      # this is a test
+      # value: ${value}
+    path: /etc/test.txt
