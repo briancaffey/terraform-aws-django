@@ -17,7 +17,7 @@ write_files:
       StandardError=syslog
       SyslogIdentifier=socat-forwarder
 
-      ExecStart=socat -d -d TCP4-LISTEN:5432,fork TCP4:${rds_address}:5432
+      ExecStart=/usr/bin/socat -d -d TCP4-LISTEN:5432,fork TCP4:${rds_address}:5432
       Restart=always
 
       [Install]
