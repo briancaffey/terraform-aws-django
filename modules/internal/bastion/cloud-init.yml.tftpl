@@ -6,7 +6,7 @@ write_files:
   - content: |
       # /etc/systemd/system/socat-forwarder.service
       [Unit]
-      Description=socat forwarder
+      Description=socat forwarder service
       After=socat-forwarder.service
       Requires=socat-forwarder.service
 
@@ -22,3 +22,6 @@ write_files:
       [Install]
       WantedBy=multi-user.target
     path: /etc/systemd/system/socat-forwarder.service
+
+runcmd:
+  - systemctl daemon-reload
