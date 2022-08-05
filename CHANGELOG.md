@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.19.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.18.1...v0.19.0) (2022-08-05)
+
+
+### Features
+
+* **cloud init:** enable socat service and start it in user data script ([8792180](https://github.com/briancaffey/terraform-aws-django/commit/8792180c0c3a2c0351260466b881e05e3f9be790))
+
+
+### Bug Fixes
+
+* update bastion user data ([879767d](https://github.com/briancaffey/terraform-aws-django/commit/879767dc225749d1bb11a31121b1f5c9fa11d9ff))
+
 ## [0.18.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.18.0...v0.18.1) (2022-07-31)
 
 
