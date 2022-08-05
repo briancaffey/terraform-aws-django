@@ -25,4 +25,7 @@ write_files:
     path: /etc/systemd/system/socat-forwarder.service
 
 runcmd:
-  - systemctl daemon-reload
+  - [ systemctl, daemon-reload ]
+  - [ systemctl, enable, socat-forwarder.service ]
+  # https://dustymabe.com/2015/08/03/installingstarting-systemd-services-using-cloud-init/
+  - [ systemctl, start, --no-block, socat-forwarder.service ]
