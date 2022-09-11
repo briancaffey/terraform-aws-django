@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.20.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.0...v0.20.1) (2022-09-11)
+
+
+### Bug Fixes
+
+* **bastion:** fix bastion host module variables in prod base ([b2d0001](https://github.com/briancaffey/terraform-aws-django/commit/b2d00011686a488ecea6bc41dc240c3d93ece40e))
+
 ## [0.20.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.19.0...v0.20.0) (2022-09-11)
 
 
