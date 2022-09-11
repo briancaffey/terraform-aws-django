@@ -95,6 +95,12 @@ module "api" {
   host_name          = local.host_name
 }
 
+module "api_autoscaling" {
+  source       = "../../internal/autoscaling"
+  cluster_name = module.ecs.cluster_name
+  service_name = module.api.service_name
+}
+
 
 ###############################################################################
 # Frontend ECS Service
@@ -150,6 +156,13 @@ module "default_celery_worker" {
   memory             = var.default_celery_worker_memory
   private_subnets    = var.private_subnets
 }
+
+module "default_celery_worker_autoscaling" {
+  source       = "../../internal/autoscaling"
+  cluster_name = module.ecs.cluster_name
+  service_name = module.default_celery_worker.service_name
+}
+
 
 ###############################################################################
 # Celery Beat
