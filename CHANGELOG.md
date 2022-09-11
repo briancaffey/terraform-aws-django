@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.20.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.1...v0.20.2) (2022-09-11)
+
+
+### Bug Fixes
+
+* **autoscaling:** add depends on to autoscaling modules for api and celery worker ([07bb5aa](https://github.com/briancaffey/terraform-aws-django/commit/07bb5aa5307a1cc0bedd5cb8ae7fd6bd4a2b6766))
+
 ## [0.20.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.0...v0.20.1) (2022-09-11)
 
 
