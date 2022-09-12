@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.20.3](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.2...v0.20.3) (2022-09-12)
+
+
+### Bug Fixes
+
+* **autoscaling:** change parameters of autoscaling modules ([4d9e044](https://github.com/briancaffey/terraform-aws-django/commit/4d9e0445df13a98af85754a8de871fc812af8377))
+
 ## [0.20.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.1...v0.20.2) (2022-09-11)
 
 
