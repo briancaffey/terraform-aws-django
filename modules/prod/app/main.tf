@@ -97,8 +97,8 @@ module "api" {
 
 module "api_autoscaling" {
   source       = "../../internal/autoscaling"
-  cluster_name = module.ecs.cluster_name
-  service_name = module.api.service_name
+  cluster_name = "${terraform.workspace}-cluster"
+  service_name = "${terraform.workspace}-gunicorn"
   depends_on   = [module.api]
 }
 
@@ -160,8 +160,8 @@ module "default_celery_worker" {
 
 module "default_celery_worker_autoscaling" {
   source       = "../../internal/autoscaling"
-  cluster_name = module.ecs.cluster_name
-  service_name = module.default_celery_worker.service_name
+  cluster_name = "${terraform.workspace}-cluster"
+  service_name = "${terraform.workspace}-default"
   depends_on   = [module.default_celery_worker]
 }
 
