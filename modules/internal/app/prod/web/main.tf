@@ -68,8 +68,8 @@ resource "aws_ecs_service" "this" {
 
   network_configuration {
     assign_public_ip = true
-    security_groups  = [var.ecs_sg_id]
-    subnets          = var.private_subnets
+    security_groups  = [var.app_sg_id]
+    subnets          = var.private_subnet_ids
   }
 
   lifecycle {

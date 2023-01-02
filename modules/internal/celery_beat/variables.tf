@@ -33,16 +33,6 @@ variable "image" {
   description = "Container image from ECS to run"
 }
 
-variable "log_group_name" {
-  type        = string
-  description = "Name of the CloudWatch Logs group"
-}
-
-variable "log_stream_prefix" {
-  type        = string
-  description = "Name of the CloudWatch Logs stream"
-}
-
 variable "log_retention_in_days" {
   default = 1
   type    = number
@@ -67,7 +57,7 @@ variable "memory" {
 }
 
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   description = "ECS Security Group ID"
   type        = string
 }
@@ -76,6 +66,6 @@ variable "execution_role_arn" {
   type = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }

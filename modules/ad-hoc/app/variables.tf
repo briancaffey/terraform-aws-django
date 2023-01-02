@@ -1,36 +1,19 @@
-################################################
-# Variables read from terraform_remote_state
-#
-# https://registry.terraform.io/modules/briancaffey/ad-hoc-environments/aws/latest
-#
-# https://github.com/briancaffey/terraform-aws-ad-hoc-environments
-#
-# Shared resources
-#################################################
-
-variable "shared_resources_workspace" {
-  type = string
-}
-
-# VPC
-
 variable "vpc_id" {
   type = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 
-variable "public_subnets" {
-  type = list(string)
-}
-
-# Security Groups
-
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   type        = string
-  description = "ECS Security Group ID"
+  description = "App Security Group ID"
+}
+
+variable "alb_sg_id" {
+  type        = string
+  description = "ALB Security Group ID"
 }
 
 # Load balancer
@@ -50,26 +33,10 @@ variable "service_discovery_namespace_id" {
   type = string
 }
 
-# IAM
-
-variable "task_role_arn" {
-  type = string
-}
-
-variable "execution_role_arn" {
-  type = string
-}
-
 # RDS
 
 variable "rds_address" {
   type = string
-}
-
-# alb_default_tg_arn
-variable "alb_default_tg_arn" {
-  type        = string
-  description = "default target group ARN"
 }
 
 
@@ -98,24 +65,6 @@ variable "region" {
 variable "domain_name" {
   description = "Domain name to be used for Route 53 records (e.g. example.com)"
   type        = string
-}
-
-variable "ecr_be_repo_url" {
-  description = "URL of the ECR repository that contains the backend image. Take from output value of bootstrap"
-}
-
-variable "be_image_tag" {
-  description = "Image tag to use in backend container definitions"
-  default     = "latest"
-}
-
-variable "ecr_fe_repo_url" {
-  description = "URL of the ECR repository that contains the frontend image. Take from output value of bootstrap"
-}
-
-variable "fe_image_tag" {
-  description = "Image tag to use in frontend container definitions"
-  default     = "latest"
 }
 
 ##############################################################################
@@ -240,12 +189,12 @@ variable "backend_update_memory" {
   type        = number
 }
 
-##############################################################################
-# S3
-##############################################################################
+variable "assets_bucket_name" {
+  description = "S3 bucket name for assets"
+  type        = string
+}
 
-variable "force_destroy" {
-  description = "Force destroy of S3 bucket"
-  default     = true
-  type        = bool
+variable "base_stack_name" {
+  description = "Name of the base stack that the ad hoc env is created in."
+  type        = string
 }

@@ -6,7 +6,7 @@ variable "vpc_id" {
   type = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 
@@ -16,13 +16,13 @@ variable "port" {
 }
 
 variable "cpu" {
-  default     = 1024
+  default     = 256
   description = "CPU to allocate to container"
   type        = number
 }
 
 variable "memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory used by the task"
   type        = number
 }
@@ -30,16 +30,6 @@ variable "memory" {
 variable "image" {
   type        = string
   description = "Container image from ECS to run"
-}
-
-variable "log_group_name" {
-  type        = string
-  description = "Name of the CloudWatch Logs group"
-}
-
-variable "log_stream_prefix" {
-  type        = string
-  description = "Name of the CloudWatch Logs stream"
 }
 
 variable "log_retention_in_days" {
@@ -78,7 +68,7 @@ variable "task_role_arn" {
   type        = string
 }
 
-variable "ecs_sg_id" {
-  description = "ECS Security Group ID"
+variable "app_sg_id" {
+  description = "App Security Group ID"
   type        = string
 }

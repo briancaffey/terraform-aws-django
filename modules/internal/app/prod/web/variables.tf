@@ -1,8 +1,3 @@
-variable "alb_default_tg_arn" {
-  description = "The ARN of the default target group"
-  type        = string
-}
-
 variable "app_count" {
   description = "Number of Docker containers to run"
   default     = 1
@@ -117,12 +112,12 @@ variable "health_check_interval" {
   type        = number
 }
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   description = "ECS Security Group ID"
   type        = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 

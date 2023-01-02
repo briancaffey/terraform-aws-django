@@ -1,6 +1,6 @@
 resource "aws_elasticache_subnet_group" "this" {
   name       = "${terraform.workspace}-elasticache-sng"
-  subnet_ids = var.private_subnets
+  subnet_ids = var.private_subnet_ids
 }
 
 resource "aws_security_group" "redis" {
@@ -12,7 +12,7 @@ resource "aws_security_group" "redis" {
     protocol        = "tcp"
     from_port       = "6379"
     to_port         = "6379"
-    security_groups = [var.ecs_sg_id]
+    security_groups = [var.app_sg_id]
   }
 
   egress {

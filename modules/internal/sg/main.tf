@@ -25,8 +25,8 @@ resource "aws_security_group" "alb" {
   }
 }
 
-resource "aws_security_group" "ecs" {
-  name        = "${terraform.workspace}-ecs-sg"
+resource "aws_security_group" "app" {
+  name        = "${terraform.workspace}-app-sg"
   description = "Allows inbound access from the ALB only"
   vpc_id      = var.vpc_id
 

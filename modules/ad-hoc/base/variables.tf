@@ -14,7 +14,7 @@ variable "azs" {
   type        = list(string)
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   description = "Private subnets to use for VPC"
   type        = list(string)
@@ -28,6 +28,11 @@ variable "public_subnets" {
 
 variable "certificate_arn" {
   description = "ARN of the certificate to use for the ALB"
+  type        = string
+}
+
+variable "domain_name" {
+  description = "Route53 domain domain name used"
   type        = string
 }
 
@@ -63,4 +68,14 @@ variable "rds_username" {
 variable "rds_password" {
   type    = string
   default = "postgres"
+}
+
+##############################################################################
+# S3
+##############################################################################
+
+variable "force_destroy" {
+  description = "Force destroy of S3 bucket"
+  default     = true
+  type        = bool
 }

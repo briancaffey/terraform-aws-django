@@ -76,11 +76,10 @@ module "api" {
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
-  ecs_sg_id          = var.ecs_sg_id
+  app_sg_id          = var.app_sg_id
   command            = var.api_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  alb_default_tg_arn = var.alb_default_tg_arn
   log_group_name     = "/ecs/${terraform.workspace}/api"
   log_stream_prefix  = "api"
   region             = var.region
@@ -91,7 +90,7 @@ module "api" {
   health_check_path  = "/api/health-check/"
   listener_arn       = var.listener_arn
   vpc_id             = var.vpc_id
-  private_subnets    = var.private_subnets
+  private_subnet_ids = var.private_subnet_ids
   host_name          = local.host_name
 }
 
@@ -111,13 +110,12 @@ module "web-ui" {
   source             = "../../internal/app/prod/web"
   name               = "web-ui"
   ecs_cluster_id     = module.ecs.cluster_id
-  ecs_sg_id          = var.ecs_sg_id
+  app_sg_id          = var.app_sg_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
   command            = var.frontend_command
   env_vars           = []
   image              = local.fe_image
-  alb_default_tg_arn = var.alb_default_tg_arn
   log_group_name     = "/ecs/${terraform.workspace}/web-ui"
   log_stream_prefix  = "web-ui"
   region             = var.region
@@ -128,7 +126,7 @@ module "web-ui" {
   health_check_path  = "/"
   listener_arn       = var.listener_arn
   vpc_id             = var.vpc_id
-  private_subnets    = var.private_subnets
+  private_subnet_ids = var.private_subnet_ids
   host_name          = local.host_name
 
   # this is needed in order to for the listener rule priorities to work correctly
@@ -143,7 +141,7 @@ module "web-ui" {
 module "default_celery_worker" {
   source             = "../../internal/app/prod/celery_worker"
   name               = "default"
-  ecs_sg_id          = var.ecs_sg_id
+  app_sg_id          = var.app_sg_id
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
@@ -155,7 +153,7 @@ module "default_celery_worker" {
   region             = var.region
   cpu                = var.default_celery_worker_cpu
   memory             = var.default_celery_worker_memory
-  private_subnets    = var.private_subnets
+  private_subnet_ids = var.private_subnet_ids
 }
 
 module "default_celery_worker_autoscaling" {
@@ -174,7 +172,7 @@ module "celery_beat" {
   source             = "../../internal/app/prod/celery_beat"
   name               = "beat"
   ecs_cluster_id     = module.ecs.cluster_id
-  ecs_sg_id          = var.ecs_sg_id
+  app_sg_id          = var.app_sg_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
   command            = var.celery_beat_command
@@ -185,7 +183,7 @@ module "celery_beat" {
   region             = var.region
   cpu                = var.celery_beat_cpu
   memory             = var.celery_beat_memory
-  private_subnets    = var.private_subnets
+  private_subnet_ids = var.private_subnet_ids
 }
 
 ###############################################################################
@@ -196,7 +194,7 @@ module "backend_update" {
   name               = "backend_update"
   source             = "../../internal/app/prod/management_command"
   ecs_cluster_id     = module.ecs.cluster_id
-  ecs_sg_id          = var.ecs_sg_id
+  app_sg_id          = var.app_sg_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
   command            = var.backend_update_command
@@ -207,5 +205,5 @@ module "backend_update" {
   region             = var.region
   cpu                = var.backend_update_cpu
   memory             = var.backend_update_memory
-  private_subnets    = var.private_subnets
+  private_subnet_ids = var.private_subnet_ids
 }

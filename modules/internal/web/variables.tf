@@ -1,8 +1,3 @@
-variable "alb_default_tg_arn" {
-  description = "The ARN of the default target group"
-  type        = string
-}
-
 variable "app_count" {
   description = "Number of Docker containers to run"
   default     = 1
@@ -37,16 +32,6 @@ variable "env_vars" {
 variable "image" {
   type        = string
   description = "Container image from ECS to run"
-}
-
-variable "log_group_name" {
-  type        = string
-  description = "Name of the CloudWatch Logs group"
-}
-
-variable "log_stream_prefix" {
-  type        = string
-  description = "Name of the CloudWatch Logs stream"
 }
 
 variable "log_retention_in_days" {
@@ -117,12 +102,12 @@ variable "health_check_interval" {
   type        = number
 }
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   description = "ECS Security Group ID"
   type        = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 

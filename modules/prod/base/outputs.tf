@@ -2,7 +2,7 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 
-output "private_subnets" {
+output "private_subnet_ids" {
   value = module.vpc.private_subnets
 }
 
@@ -12,8 +12,8 @@ output "public_subnets" {
 
 # security groups
 
-output "ecs_sg_id" {
-  value = module.sg.ecs_sg_id
+output "app_sg_id" {
+  value = module.sg.app_sg_id
 }
 
 output "alb_sg_id" {
@@ -24,10 +24,6 @@ output "alb_sg_id" {
 
 output "listener_arn" {
   value = module.lb.listener_arn
-}
-
-output "alb_default_tg_arn" {
-  value = module.lb.alb_default_tg_arn
 }
 
 output "alb_dns_name" {
@@ -57,19 +53,4 @@ output "rds_address" {
 
 output "redis_service_host" {
   value = module.elasticache.redis_service_host
-}
-
-# Bastion
-
-output "bastion_public_ip" {
-  value       = module.bastion.public_ip
-  description = "bastion host public ip"
-}
-
-output "ssh_command" {
-  value = <<EOT
-ssh -o StrictHostKeyChecking=no -t -t  \
-    -i ~/.ssh/${var.key_name}.pem "ec2-user@${module.bastion.public_ip}" \
-    -L "5432:${module.rds.address}:5432" &
-EOT
 }

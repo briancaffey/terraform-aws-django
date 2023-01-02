@@ -14,7 +14,7 @@ variable "azs" {
   type        = list(string)
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   description = "Private subnets to use for VPC"
   type        = list(string)

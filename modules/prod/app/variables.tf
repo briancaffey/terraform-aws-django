@@ -4,7 +4,7 @@ variable "vpc_id" {
   type = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 
@@ -14,7 +14,7 @@ variable "public_subnets" {
 
 # Security Groups
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   type        = string
   description = "ECS Security Group ID"
 }
@@ -57,13 +57,6 @@ variable "redis_service_host" {
   type        = string
   description = "value of the REDIS_SERVICE_HOST environment variable"
 }
-
-# alb_default_tg_arn
-variable "alb_default_tg_arn" {
-  type        = string
-  description = "default target group ARN"
-}
-
 
 ##############################################################################
 # AWS

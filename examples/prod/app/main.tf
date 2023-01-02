@@ -31,8 +31,7 @@ module "main" {
   execution_role_arn = data.terraform_remote_state.shared.outputs.execution_role_arn
   listener_arn       = data.terraform_remote_state.shared.outputs.listener_arn
   alb_dns_name       = data.terraform_remote_state.shared.outputs.alb_dns_name
-  ecs_sg_id          = data.terraform_remote_state.shared.outputs.ecs_sg_id
-  alb_default_tg_arn = data.terraform_remote_state.shared.outputs.alb_default_tg_arn
+  app_sg_id          = data.terraform_remote_state.shared.outputs.app_sg_id
   private_subnets    = data.terraform_remote_state.shared.outputs.private_subnets
   public_subnets     = data.terraform_remote_state.shared.outputs.public_subnets
 

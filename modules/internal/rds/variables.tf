@@ -2,11 +2,11 @@ variable "vpc_id" {
   type = string
 }
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   type = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }
 

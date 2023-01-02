@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "this" {
-  name              = var.log_group_name
+  name              = "/ecs/${terraform.workspace}/${var.name}"
   retention_in_days = var.log_retention_in_days
 }
 
 resource "aws_cloudwatch_log_stream" "this" {
-  name           = var.log_stream_prefix
+  name           = var.name
   log_group_name = aws_cloudwatch_log_group.this.name
 }
 
@@ -25,9 +25,9 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          "awslogs-group"         = var.log_group_name
+          "awslogs-group"         = aws_cloudwatch_log_group.this.name
           "awslogs-region"        = var.region
-          "awslogs-stream-prefix" = var.log_stream_prefix
+          "awslogs-stream-prefix" = var.name
         }
       }
       portMappings = [
@@ -68,8 +68,8 @@ resource "aws_ecs_service" "this" {
 
   network_configuration {
     assign_public_ip = true
-    security_groups  = [var.ecs_sg_id]
-    subnets          = var.private_subnets
+    security_groups  = [var.app_sg_id]
+    subnets          = var.private_subnet_ids
   }
 
   lifecycle {

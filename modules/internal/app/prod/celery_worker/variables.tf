@@ -66,7 +66,7 @@ variable "memory" {
   type        = number
 }
 
-variable "ecs_sg_id" {
+variable "app_sg_id" {
   description = "ECS Security Group ID"
   type        = string
 }
@@ -76,6 +76,6 @@ variable "execution_role_arn" {
   type        = string
 }
 
-variable "private_subnets" {
+variable "private_subnet_ids" {
   type = list(string)
 }

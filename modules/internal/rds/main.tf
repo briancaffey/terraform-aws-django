@@ -8,7 +8,7 @@ resource "aws_security_group" "this" {
     protocol        = "tcp"
     from_port       = var.port
     to_port         = var.port
-    security_groups = [var.ecs_sg_id]
+    security_groups = [var.app_sg_id]
   }
 
   ingress {
@@ -28,7 +28,7 @@ resource "aws_security_group" "this" {
 
 resource "aws_db_subnet_group" "this" {
   name       = "${terraform.workspace}-rds-subnet-group"
-  subnet_ids = var.private_subnets
+  subnet_ids = var.private_subnet_ids
 }
 
 # RDS instance

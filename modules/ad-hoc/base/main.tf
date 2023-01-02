@@ -9,7 +9,7 @@ module "vpc" {
   cidr = var.cidr
 
   azs             = var.azs
-  private_subnets = var.private_subnets
+  private_subnets = var.private_subnet_ids
   public_subnets  = var.public_subnets
 
   enable_nat_gateway     = true
@@ -19,6 +19,16 @@ module "vpc" {
   # DNS settings
   enable_dns_hostnames = true
   enable_dns_support   = true
+}
+
+###############################################################################
+# S3 - TODO add S3 bucket resource for app assets
+###############################################################################
+
+module "s3" {
+  source        = "../../internal/s3"
+  bucket_name   = "${replace(var.domain_name, ".", "-")}-${terraform.workspace}-assets-bucket"
+  force_destroy = var.force_destroy
 }
 
 ###############################################################################
@@ -52,20 +62,12 @@ module "sd" {
 }
 
 ###############################################################################
-# IAM
-###############################################################################
-
-module "iam" {
-  source = "../../internal/iam"
-}
-
-###############################################################################
 # RDS
 ###############################################################################
 
 module "rds" {
   source          = "../../internal/rds"
-  ecs_sg_id       = module.sg.ecs_sg_id
+  app_sg_id       = module.sg.app_sg_id
   vpc_id          = module.vpc.vpc_id
   private_subnets = module.vpc.private_subnets
   port            = var.port
@@ -84,7 +86,7 @@ module "bastion" {
   source          = "../../internal/bastion"
   vpc_id          = module.vpc.vpc_id
   alb_sg_id       = module.sg.alb_sg_id
-  ecs_sg_id       = module.sg.ecs_sg_id
+  app_sg_id       = module.sg.app_sg_id
   private_subnets = module.vpc.private_subnets
   rds_address     = module.rds.address
 }

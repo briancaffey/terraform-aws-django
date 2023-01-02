@@ -9,7 +9,7 @@ module "vpc" {
   cidr = var.cidr
 
   azs             = var.azs
-  private_subnets = var.private_subnets
+  private_subnets = var.private_subnet_ids
   public_subnets  = var.public_subnets
 
   enable_nat_gateway     = true
@@ -56,7 +56,7 @@ module "iam" {
 
 module "rds" {
   source          = "../../internal/rds"
-  ecs_sg_id       = module.sg.ecs_sg_id
+  app_sg_id       = module.sg.app_sg_id
   vpc_id          = module.vpc.vpc_id
   private_subnets = module.vpc.private_subnets
   port            = var.port
@@ -76,7 +76,7 @@ module "elasticache" {
   vpc_id          = module.vpc.vpc_id
   azs             = module.vpc.azs
   private_subnets = module.vpc.private_subnets
-  ecs_sg_id       = module.sg.ecs_sg_id
+  app_sg_id       = module.sg.app_sg_id
 }
 
 ###############################################################################
@@ -87,7 +87,7 @@ module "bastion" {
   source          = "../../internal/bastion"
   vpc_id          = module.vpc.vpc_id
   alb_sg_id       = module.sg.alb_sg_id
-  ecs_sg_id       = module.sg.ecs_sg_id
+  app_sg_id       = module.sg.app_sg_id
   private_subnets = module.vpc.private_subnets
   rds_address     = module.rds.address
 }
