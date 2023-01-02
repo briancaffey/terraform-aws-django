@@ -66,16 +66,16 @@ module "sd" {
 ###############################################################################
 
 module "rds" {
-  source          = "../../internal/rds"
-  app_sg_id       = module.sg.app_sg_id
-  vpc_id          = module.vpc.vpc_id
-  private_subnets = module.vpc.private_subnets
-  port            = var.port
-  engine          = var.engine
-  engine_version  = var.engine_version
-  rds_db_name     = var.rds_db_name
-  rds_username    = var.rds_username
-  rds_password    = var.rds_password
+  source             = "../../internal/rds"
+  app_sg_id          = module.sg.app_sg_id
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  port               = var.port
+  engine             = var.engine
+  engine_version     = var.engine_version
+  rds_db_name        = var.rds_db_name
+  rds_username       = var.rds_username
+  rds_password       = var.rds_password
 }
 
 ###############################################################################
@@ -83,10 +83,10 @@ module "rds" {
 ###############################################################################
 
 module "bastion" {
-  source          = "../../internal/bastion"
-  vpc_id          = module.vpc.vpc_id
-  alb_sg_id       = module.sg.alb_sg_id
-  app_sg_id       = module.sg.app_sg_id
-  private_subnets = module.vpc.private_subnets
-  rds_address     = module.rds.address
+  source             = "../../internal/bastion"
+  vpc_id             = module.vpc.vpc_id
+  alb_sg_id          = module.sg.alb_sg_id
+  app_sg_id          = module.sg.app_sg_id
+  private_subnet_ids = module.vpc.private_subnets
+  rds_address        = module.rds.address
 }
