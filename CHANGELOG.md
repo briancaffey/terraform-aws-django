@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.21.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.21.0...v0.21.1) (2023-01-02)
+
+
+### Bug Fixes
+
+* **sg:** allow app sg inbound and outbound traffic to itself ([0766b1b](https://github.com/briancaffey/terraform-aws-django/commit/0766b1bb321ea69b1e944593b98c25f5e7f4cc71))
+
 ## [0.21.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.3...v0.21.0) (2023-01-02)
 
 
