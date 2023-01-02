@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.21.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.3...v0.21.0) (2023-01-02)
+
+
+### Features
+
+* **refactor:** major refactor of ad hoc environment modules ([2d95d0b](https://github.com/briancaffey/terraform-aws-django/commit/2d95d0bd96ab9020dd8a7808b24a11385b36176c))
+
 ## [0.20.3](https://github.com/briancaffey/terraform-aws-django/compare/v0.20.2...v0.20.3) (2022-09-12)
 
 
