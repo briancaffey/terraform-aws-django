@@ -45,7 +45,7 @@ module "sg" {
 ###############################################################################
 
 module "lb" {
-  source          = "../../internal/lb"
+  source          = "../../internal/alb"
   vpc_id          = module.vpc.vpc_id
   public_subnets  = module.vpc.public_subnets
   alb_sg_id       = module.sg.alb_sg_id
