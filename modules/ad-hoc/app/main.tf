@@ -19,7 +19,7 @@ module "iam" {
 ###############################################################################
 
 module "redis" {
-  source                         = "../../internal/redis"
+  source                         = "../../internal/ecs/redis"
   name                           = "redis"
   image                          = "redis:5.0.3-alpine"
   vpc_id                         = var.vpc_id
@@ -89,7 +89,7 @@ locals {
 ###############################################################################
 
 module "api" {
-  source             = "../../internal/web"
+  source             = "../../internal/ecs/web"
   name               = "gunicorn"
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = module.iam.task_role_arn
@@ -115,7 +115,7 @@ module "api" {
 ###############################################################################
 
 module "web-ui" {
-  source             = "../../internal/web"
+  source             = "../../internal/ecs/web"
   name               = "web-ui"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
@@ -145,7 +145,7 @@ module "web-ui" {
 ###############################################################################
 
 module "default_celery_worker" {
-  source             = "../../internal/celery_worker"
+  source             = "../../internal/ecs/celery_worker"
   name               = "default"
   app_sg_id          = var.app_sg_id
   ecs_cluster_id     = module.ecs.cluster_id
@@ -165,7 +165,7 @@ module "default_celery_worker" {
 ###############################################################################
 
 module "celery_beat" {
-  source             = "../../internal/celery_beat"
+  source             = "../../internal/ecs/celery_beat"
   name               = "beat"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
@@ -185,7 +185,7 @@ module "celery_beat" {
 ###############################################################################
 
 module "backend_update" {
-  source             = "../../internal/management_command"
+  source             = "../../internal/ecs/management_command"
   name               = "backend_update"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
