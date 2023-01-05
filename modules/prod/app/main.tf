@@ -3,7 +3,7 @@
 ###############################################################################
 
 module "ecs" {
-  source = "../../internal/ecs/cluster"
+  source = "../../internal/ecs/prod/cluster"
 }
 
 ###############################################################################
@@ -71,7 +71,7 @@ locals {
 ###############################################################################
 
 module "api" {
-  source             = "../../internal/app/prod/web"
+  source             = "../../internal/ecs/prod/web"
   name               = "gunicorn"
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = var.task_role_arn
@@ -107,7 +107,7 @@ module "api_autoscaling" {
 ###############################################################################
 
 module "web-ui" {
-  source             = "../../internal/app/prod/web"
+  source             = "../../internal/ecs/prod/web"
   name               = "web-ui"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
@@ -139,7 +139,7 @@ module "web-ui" {
 ###############################################################################
 
 module "default_celery_worker" {
-  source             = "../../internal/app/prod/celery_worker"
+  source             = "../../internal/ecs/prod/celery_worker"
   name               = "default"
   app_sg_id          = var.app_sg_id
   ecs_cluster_id     = module.ecs.cluster_id
@@ -169,7 +169,7 @@ module "default_celery_worker_autoscaling" {
 ###############################################################################
 
 module "celery_beat" {
-  source             = "../../internal/app/prod/celery_beat"
+  source             = "../../internal/ecs/prod/celery_beat"
   name               = "beat"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
@@ -192,7 +192,7 @@ module "celery_beat" {
 
 module "backend_update" {
   name               = "backend_update"
-  source             = "../../internal/app/prod/management_command"
+  source             = "../../internal/ecs/prod/management_command"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
   task_role_arn      = var.task_role_arn

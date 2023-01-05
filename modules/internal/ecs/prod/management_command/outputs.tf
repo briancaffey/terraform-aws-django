@@ -13,6 +13,6 @@ aws ecs wait tasks-stopped --tasks $TASK_ID --cluster ${var.ecs_cluster_id}
 
 END_TIME=$(date +%s000)
 
-aws logs get-log-events --log-group-name ${var.log_group_name} --log-stream-name ${var.log_stream_prefix}/${var.name}/$${TASK_ID##*/} --start-time $START_TIME --end-time $END_TIME | jq -r '.events[].message'
+aws logs get-log-events --log-group-name ${aws_cloudwatch_log_group.this.name} --log-stream-name ${var.log_stream_prefix}/${var.name}/$${TASK_ID##*/} --start-time $START_TIME --end-time $END_TIME | jq -r '.events[].message'
   EOT
 }
