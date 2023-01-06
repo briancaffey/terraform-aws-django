@@ -1,6 +1,23 @@
 # Changelog
 
 
+## [0.22.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.21.1...v0.22.0) (2023-01-06)
+
+
+### Features
+
+* **alb:** rename lb dir to alb ([3f55f98](https://github.com/briancaffey/terraform-aws-django/commit/3f55f98c168238e67ec494382bc62503da34f5da))
+* **cluster:** move ecs cluster files to new directory under ecs ([2d76924](https://github.com/briancaffey/terraform-aws-django/commit/2d76924c3b01621946b063f8a806ee294d1db1e1))
+* **prod:** refactor prod infra and ensure that base and app prod envs work deploying locally ([aa93862](https://github.com/briancaffey/terraform-aws-django/commit/aa93862327aa4d5d1e8efd47112d23e7ae878ad5))
+* **refactor:** refactor ecs service modules and log group and log stream names ([5b18264](https://github.com/briancaffey/terraform-aws-django/commit/5b18264d5a85259d78fa0aa1909c228c4554630a))
+* **services:** refactor ecs services into a new directory in internal modules dir ([9b397e0](https://github.com/briancaffey/terraform-aws-django/commit/9b397e0ad7df0ed7c9004fbd7c0bde86ee95a5d0))
+
+
+### Bug Fixes
+
+* **bastion:** remove unused var ([1e39a31](https://github.com/briancaffey/terraform-aws-django/commit/1e39a3187dcc4c7daf92ea53fb11bfc5f21ae9b2))
+* **bastion:** remove unused var from prod bastion ([aa15a27](https://github.com/briancaffey/terraform-aws-django/commit/aa15a279e482e5d93fc5c01c35f71127969fd3b1))
+
 ## [0.21.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.21.0...v0.21.1) (2023-01-02)
 
 
