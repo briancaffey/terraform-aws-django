@@ -31,9 +31,13 @@ output "app_sg_id" {
 }
 
 output "private_subnet_ids" {
-  value = module.main.private_subnets
+  value = module.main.private_subnet_ids
 }
 
-output "public_subnets" {
-  value = module.main.public_subnets
+output "domain_name" {
+  value = var.domain_name
+}
+
+output "assets_bucket_name" {
+  value = module.main.assets_bucket_name
 }

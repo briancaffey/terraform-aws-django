@@ -1,3 +1,8 @@
+variable "domain_name" {
+  description = "Route53 domain domain name used"
+  type        = string
+}
+
 ##############################################################################
 # VPC
 ##############################################################################
@@ -76,9 +81,11 @@ variable "rds_password" {
 }
 
 ##############################################################################
-# Bastion
+# S3
 ##############################################################################
 
-variable "key_name" {
-  type = string
+variable "force_destroy" {
+  description = "Force destroy of S3 bucket"
+  default     = true
+  type        = bool
 }

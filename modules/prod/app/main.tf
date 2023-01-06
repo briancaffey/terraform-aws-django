@@ -7,16 +7,6 @@ module "ecs" {
 }
 
 ###############################################################################
-# S3
-###############################################################################
-
-module "s3" {
-  source        = "../../internal/s3"
-  bucket_name   = "${replace(var.domain_name, ".", "-")}-${terraform.workspace}-bucket"
-  force_destroy = true
-}
-
-###############################################################################
 # Route 53
 ###############################################################################
 
@@ -29,6 +19,8 @@ module "route53" {
 ###############################################################################
 # Common variables for ECS Services and Tasks
 ###############################################################################
+
+data "aws_caller_identity" "current" {}
 
 locals {
   env_vars = [
@@ -50,7 +42,7 @@ locals {
     },
     {
       name  = "S3_BUCKET_NAME"
-      value = module.s3.bucket_name
+      value = var.assets_bucket_name
     },
     {
       name  = "FRONTEND_URL"
@@ -61,8 +53,8 @@ locals {
       value = var.domain_name
     }
   ]
-  be_image  = "${var.ecr_be_repo_url}:${var.be_image_tag}"
-  fe_image  = "${var.ecr_fe_repo_url}:${var.fe_image_tag}"
+  be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/backend:latest"
+  fe_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/frontend:latest"
   host_name = "${terraform.workspace}.${var.domain_name}"
 }
 
@@ -80,8 +72,6 @@ module "api" {
   command            = var.api_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/api"
-  log_stream_prefix  = "api"
   region             = var.region
   cpu                = var.api_cpu
   memory             = var.api_memory
@@ -116,8 +106,6 @@ module "web-ui" {
   command            = var.frontend_command
   env_vars           = []
   image              = local.fe_image
-  log_group_name     = "/ecs/${terraform.workspace}/web-ui"
-  log_stream_prefix  = "web-ui"
   region             = var.region
   cpu                = var.api_cpu
   memory             = var.api_memory
@@ -148,8 +136,6 @@ module "default_celery_worker" {
   command            = var.default_celery_worker_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/celery-default-worker"
-  log_stream_prefix  = "celery-default-worker"
   region             = var.region
   cpu                = var.default_celery_worker_cpu
   memory             = var.default_celery_worker_memory
@@ -178,8 +164,6 @@ module "celery_beat" {
   command            = var.celery_beat_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/celery-beat"
-  log_stream_prefix  = "celery-beat"
   region             = var.region
   cpu                = var.celery_beat_cpu
   memory             = var.celery_beat_memory
@@ -200,8 +184,6 @@ module "backend_update" {
   command            = var.backend_update_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  log_group_name     = "/ecs/${terraform.workspace}/backend_update"
-  log_stream_prefix  = "backend_update"
   region             = var.region
   cpu                = var.backend_update_cpu
   memory             = var.backend_update_memory

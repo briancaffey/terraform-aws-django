@@ -8,10 +8,6 @@ variable "private_subnet_ids" {
   type = list(string)
 }
 
-variable "public_subnets" {
-  type = list(string)
-}
-
 # Security Groups
 
 variable "app_sg_id" {
@@ -85,24 +81,6 @@ variable "domain_name" {
   type        = string
 }
 
-variable "ecr_be_repo_url" {
-  description = "URL of the ECR repository that contains the backend image. Take from output value of bootstrap"
-}
-
-variable "be_image_tag" {
-  description = "Image tag to use in backend container definitions"
-  default     = "latest"
-}
-
-variable "ecr_fe_repo_url" {
-  description = "URL of the ECR repository that contains the frontend image. Take from output value of bootstrap"
-}
-
-variable "fe_image_tag" {
-  description = "Image tag to use in frontend container definitions"
-  default     = "latest"
-}
-
 ##############################################################################
 # Application Services - Gunicorn, Celery, Beat, frontend SPA, etc.
 ##############################################################################
@@ -115,8 +93,7 @@ variable "extra_env_vars" {
   default     = []
 }
 
-variable "s3_bucket_name" {
-  default     = "s3-bucket-dev"
+variable "assets_bucket_name" {
   description = "S3 bucket name for backend assets (media and static assets)"
 }
 

@@ -22,6 +22,16 @@ module "vpc" {
 }
 
 ###############################################################################
+# S3 - TODO add S3 bucket resource for app assets
+###############################################################################
+
+module "s3" {
+  source        = "../../internal/s3"
+  bucket_name   = "${replace(var.domain_name, ".", "-")}-${terraform.workspace}-assets-bucket"
+  force_destroy = var.force_destroy
+}
+
+###############################################################################
 # SG
 ###############################################################################
 
@@ -55,16 +65,16 @@ module "iam" {
 ###############################################################################
 
 module "rds" {
-  source          = "../../internal/rds"
-  app_sg_id       = module.sg.app_sg_id
-  vpc_id          = module.vpc.vpc_id
-  private_subnets = module.vpc.private_subnets
-  port            = var.port
-  engine          = var.engine
-  engine_version  = var.engine_version
-  rds_db_name     = var.rds_db_name
-  rds_username    = var.rds_username
-  rds_password    = var.rds_password
+  source             = "../../internal/rds"
+  app_sg_id          = module.sg.app_sg_id
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  port               = var.port
+  engine             = var.engine
+  engine_version     = var.engine_version
+  rds_db_name        = var.rds_db_name
+  rds_username       = var.rds_username
+  rds_password       = var.rds_password
 }
 
 ###############################################################################
@@ -72,11 +82,11 @@ module "rds" {
 ###############################################################################
 
 module "elasticache" {
-  source          = "../../internal/elasticache"
-  vpc_id          = module.vpc.vpc_id
-  azs             = module.vpc.azs
-  private_subnets = module.vpc.private_subnets
-  app_sg_id       = module.sg.app_sg_id
+  source             = "../../internal/elasticache"
+  vpc_id             = module.vpc.vpc_id
+  azs                = module.vpc.azs
+  private_subnet_ids = module.vpc.private_subnets
+  app_sg_id          = module.sg.app_sg_id
 }
 
 ###############################################################################
@@ -84,9 +94,9 @@ module "elasticache" {
 ###############################################################################
 
 module "bastion" {
-  source          = "../../internal/bastion"
-  vpc_id          = module.vpc.vpc_id
-  app_sg_id       = module.sg.app_sg_id
-  private_subnets = module.vpc.private_subnets
-  rds_address     = module.rds.address
+  source             = "../../internal/bastion"
+  vpc_id             = module.vpc.vpc_id
+  app_sg_id          = module.sg.app_sg_id
+  private_subnet_ids = module.vpc.private_subnets
+  rds_address        = module.rds.address
 }
