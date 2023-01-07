@@ -10,8 +10,3 @@ variable "private_subnet_ids" {
 variable "app_sg_id" {
   type = string
 }
-
-variable "azs" {
-  description = "AZs in which to place the ElastiCache cluster"
-  type        = list(string)
-}

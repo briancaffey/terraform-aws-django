@@ -84,7 +84,6 @@ module "rds" {
 module "elasticache" {
   source             = "../../internal/elasticache"
   vpc_id             = module.vpc.vpc_id
-  azs                = module.vpc.azs
   private_subnet_ids = module.vpc.private_subnets
   app_sg_id          = module.sg.app_sg_id
 }
