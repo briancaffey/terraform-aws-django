@@ -111,13 +111,13 @@ variable "backend_command" {
 }
 
 variable "backend_cpu" {
-  default     = 1024
-  description = "CPU to allocate for this task (1024 = 1.0 vCPU)"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "backend_memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
@@ -131,13 +131,13 @@ variable "frontend_command" {
 }
 
 variable "frontend_cpu" {
-  default     = 1024
-  description = "CPU to allocate for this task (1024 = 1.0 vCPU)"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "frontend_memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
@@ -151,13 +151,13 @@ variable "celery_beat_command" {
 }
 
 variable "celery_beat_cpu" {
-  default     = 1024
-  description = "CPU to allocate for this task (1024 = 1.0 vCPU)"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "celery_beat_memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
@@ -171,13 +171,13 @@ variable "celery_worker_command" {
 }
 
 variable "celery_worker_cpu" {
-  default     = 1024
-  description = "CPU to allocate for this task (1024 = 1.0 vCPU)"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "celery_worker_memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
@@ -191,13 +191,13 @@ variable "backend_update_command" {
 }
 
 variable "backend_update_cpu" {
-  default     = 1024
-  description = "CPU to allocate for this task (1024 = 1.0 vCPU)"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "backend_update_memory" {
-  default     = 2048
+  default     = 512
   description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
