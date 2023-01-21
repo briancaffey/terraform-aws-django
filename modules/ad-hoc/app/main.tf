@@ -151,12 +151,12 @@ module "default_celery_worker" {
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = module.iam.task_role_arn
   execution_role_arn = module.iam.execution_role_arn
-  command            = var.default_celery_worker_command
+  command            = var.celery_worker_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
   region             = var.region
-  cpu                = var.default_celery_worker_cpu
-  memory             = var.default_celery_worker_memory
+  cpu                = var.celery_worker_cpu
+  memory             = var.celery_worker_memory
   private_subnet_ids = var.private_subnet_ids
 }
 
