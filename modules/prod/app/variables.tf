@@ -104,21 +104,21 @@ variable "django_settings_module" {
 
 # api
 
-variable "api_command" {
+variable "backend_command" {
   description = "Command used to start backend API container"
   default     = ["gunicorn", "-t", "1000", "-b", "0.0.0.0:8000", "--log-level", "info", "backend.wsgi"]
   type        = list(string)
 }
 
-variable "api_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container"
+variable "backend_cpu" {
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
-variable "api_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
+variable "backend_memory" {
+  default     = 512
+  description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
 
@@ -131,14 +131,14 @@ variable "frontend_command" {
 }
 
 variable "frontend_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container for the frontend task"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "frontend_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the frontend task"
+  default     = 512
+  description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
 
@@ -151,34 +151,34 @@ variable "celery_beat_command" {
 }
 
 variable "celery_beat_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "celery_beat_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
+  default     = 512
+  description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
 
-# default celery worker
+# Celery worker
 
-variable "default_celery_worker_command" {
+variable "celery_worker_command" {
   description = "Command used to start celery worker"
   default     = ["celery", "--app=backend.celery_app:app", "worker", "--loglevel=INFO", "-Q", "default"]
   type        = list(string)
 }
 
-variable "default_celery_worker_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container"
+variable "celery_worker_cpu" {
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
-variable "default_celery_worker_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
+variable "celery_worker_memory" {
+  default     = 512
+  description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }
 
@@ -191,13 +191,13 @@ variable "backend_update_command" {
 }
 
 variable "backend_update_cpu" {
-  default     = 1024
-  description = "CPU to allocate to container"
+  default     = 256
+  description = "CPU to allocate for this task (256 = 0.25 vCPU)"
   type        = number
 }
 
 variable "backend_update_memory" {
-  default     = 2048
-  description = "Amount (in MiB) of memory used by the task"
+  default     = 512
+  description = "Amount (in MiB) of memory to allocate for this task"
   type        = number
 }

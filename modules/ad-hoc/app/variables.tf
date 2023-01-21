@@ -131,19 +131,19 @@ variable "celery_beat_memory" {
 
 # default celery worker
 
-variable "default_celery_worker_command" {
+variable "celery_worker_command" {
   description = "Command used to start celery worker"
   default     = ["celery", "--app=backend.celery_app:app", "worker", "--loglevel=INFO", "-Q", "default"]
   type        = list(string)
 }
 
-variable "default_celery_worker_cpu" {
+variable "celery_worker_cpu" {
   default     = 1024
   description = "CPU to allocate to container"
   type        = number
 }
 
-variable "default_celery_worker_memory" {
+variable "celery_worker_memory" {
   default     = 2048
   description = "Amount (in MiB) of memory used by the task"
   type        = number

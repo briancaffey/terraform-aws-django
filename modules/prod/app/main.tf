@@ -69,12 +69,12 @@ module "api" {
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
   app_sg_id          = var.app_sg_id
-  command            = var.api_command
+  command            = var.backend_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
   region             = var.region
-  cpu                = var.api_cpu
-  memory             = var.api_memory
+  cpu                = var.backend_cpu
+  memory             = var.backend_memory
   port               = 8000
   path_patterns      = ["/api/*", "/admin/*", "/graphql/*", "/mtv/*"]
   health_check_path  = "/api/health-check/"
@@ -107,8 +107,8 @@ module "web-ui" {
   env_vars           = []
   image              = local.fe_image
   region             = var.region
-  cpu                = var.api_cpu
-  memory             = var.api_memory
+  cpu                = var.backend_cpu
+  memory             = var.backend_memory
   port               = 80
   path_patterns      = ["/*"]
   health_check_path  = "/"
@@ -133,16 +133,16 @@ module "default_celery_worker" {
   ecs_cluster_id     = module.ecs.cluster_id
   task_role_arn      = var.task_role_arn
   execution_role_arn = var.execution_role_arn
-  command            = var.default_celery_worker_command
+  command            = var.celery_worker_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
   region             = var.region
-  cpu                = var.default_celery_worker_cpu
-  memory             = var.default_celery_worker_memory
+  cpu                = var.celery_worker_cpu
+  memory             = var.celery_worker_memory
   private_subnet_ids = var.private_subnet_ids
 }
 
-module "default_celery_worker_autoscaling" {
+module "celery_worker_autoscaling" {
   source       = "../../internal/autoscaling"
   cluster_name = "${terraform.workspace}-cluster"
   service_name = "${terraform.workspace}-default"
