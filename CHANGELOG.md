@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.23.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.23.1...v0.23.2) (2023-01-24)
+
+
+### Bug Fixes
+
+* Give unique alarm_name to avoid collision when default and gunicorn both create the same alarm name. ([#61](https://github.com/briancaffey/terraform-aws-django/issues/61)) ([3a61b6a](https://github.com/briancaffey/terraform-aws-django/commit/3a61b6aa1a2e923d31550dd55c088e851e06b897))
+
 ## [0.23.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.23.0...v0.23.1) (2023-01-24)
 
 
