@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.23.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.23.0...v0.23.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* Set auto_minor_version_upgrade = false (so state does not get changed outside of terraform) ([#62](https://github.com/briancaffey/terraform-aws-django/issues/62)) ([df451f1](https://github.com/briancaffey/terraform-aws-django/commit/df451f1d706c43456092f650722f74c1b1a359b0))
+
 ## [0.23.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.22.1...v0.23.0) (2023-01-21)
 
 
