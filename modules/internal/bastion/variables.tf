@@ -8,7 +8,7 @@ variable "private_subnet_ids" {
 
 variable "instance_type" {
   type    = string
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
 variable "app_sg_id" {

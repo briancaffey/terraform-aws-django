@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [0.23.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.22.1...v0.23.0) (2023-01-21)
+
+
+### Features
+
+* Change default instance type from t2.micro to t3.micro ([#56](https://github.com/briancaffey/terraform-aws-django/issues/56)) ([8d81226](https://github.com/briancaffey/terraform-aws-django/commit/8d812267bd0d3ff830d56778ae20b030daad9733))
+
+## [0.22.1](https://github.com/briancaffey/terraform-aws-django/compare/v0.22.0...v0.22.1) (2023-01-21)
+
+
+### Bug Fixes
+
+* **services:** Frontend (web-ui) using incorrect variables for cpu/memory ([#54](https://github.com/briancaffey/terraform-aws-django/issues/54)) ([e0c8a6a](https://github.com/briancaffey/terraform-aws-django/commit/e0c8a6af64d4280abeb329c577e0330208264a11))
+
 ## [0.22.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.21.1...v0.22.0) (2023-01-06)
 
 

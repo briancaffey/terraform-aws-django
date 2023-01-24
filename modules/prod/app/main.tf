@@ -107,8 +107,8 @@ module "web-ui" {
   env_vars           = []
   image              = local.fe_image
   region             = var.region
-  cpu                = var.api_cpu
-  memory             = var.api_memory
+  cpu                = var.frontend_cpu
+  memory             = var.frontend_memory
   port               = 80
   path_patterns      = ["/*"]
   health_check_path  = "/"
