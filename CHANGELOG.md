@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.24.0](https://github.com/briancaffey/terraform-aws-django/compare/v0.23.2...v0.24.0) (2025-01-27)
+
+
+### Features
+
+* **upgrade:** upgrade terraform and aws provider versions for examples ([9a9ac94](https://github.com/briancaffey/terraform-aws-django/commit/9a9ac94193f84484147627f09d86b14353b620b1))
+
 ## [0.23.2](https://github.com/briancaffey/terraform-aws-django/compare/v0.23.1...v0.23.2) (2023-01-24)
 
 
