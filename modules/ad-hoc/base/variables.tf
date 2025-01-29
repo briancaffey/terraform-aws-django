@@ -37,7 +37,7 @@ variable "domain_name" {
 }
 
 ##############################################################################
-# RDS (Optional Variables for RDS configuration - defaults to Postgres 13.4)
+# RDS (Optional Variables for RDS configuration - defaults to Postgres 17.2)
 ##############################################################################
 
 variable "port" {
@@ -52,7 +52,7 @@ variable "engine" {
 
 variable "engine_version" {
   type    = string
-  default = "13.4"
+  default = "17.2"
 }
 
 variable "rds_db_name" {

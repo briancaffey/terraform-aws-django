@@ -24,10 +24,21 @@ module "vpc" {
 ###############################################################################
 # Service Discovery (Cloud Map)
 ###############################################################################
+# TODO: remove this
+# module "sd" {
+#   source = "../../internal/sd"
+#   vpc_id = module.vpc.vpc_id
+# }
 
-module "sd" {
-  source = "../../internal/sd"
-  vpc_id = module.vpc.vpc_id
+###############################################################################
+# ElastiCache
+###############################################################################
+
+module "elasticache" {
+  source             = "../../internal/elasticache"
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  app_sg_id          = module.sg.app_sg_id
 }
 
 ###############################################################################
@@ -81,11 +92,11 @@ module "rds" {
 ###############################################################################
 # Bastion host
 ###############################################################################
-
-module "bastion" {
-  source             = "../../internal/bastion"
-  vpc_id             = module.vpc.vpc_id
-  app_sg_id          = module.sg.app_sg_id
-  private_subnet_ids = module.vpc.private_subnets
-  rds_address        = module.rds.address
-}
+# TODO: remove this altogether as bastion host is not needed
+# module "bastion" {
+#   source             = "../../internal/bastion"
+#   vpc_id             = module.vpc.vpc_id
+#   app_sg_id          = module.sg.app_sg_id
+#   private_subnet_ids = module.vpc.private_subnets
+#   rds_address        = module.rds.address
+# }

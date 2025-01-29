@@ -15,24 +15,6 @@ module "iam" {
 }
 
 ###############################################################################
-# Redis
-###############################################################################
-
-module "redis" {
-  source                         = "../../internal/ecs/ad-hoc/redis"
-  name                           = "redis"
-  image                          = "redis:5.0.3-alpine"
-  vpc_id                         = var.vpc_id
-  task_role_arn                  = module.iam.task_role_arn
-  execution_role_arn             = module.iam.execution_role_arn
-  private_subnet_ids             = var.private_subnet_ids
-  ecs_cluster_id                 = module.ecs.cluster_id
-  app_sg_id                      = var.app_sg_id
-  service_discovery_namespace_id = var.service_discovery_namespace_id
-  region                         = var.region
-}
-
-###############################################################################
 # Route 53
 ###############################################################################
 
@@ -52,7 +34,7 @@ locals {
   env_vars = [
     {
       name  = "REDIS_SERVICE_HOST"
-      value = "${terraform.workspace}-redis.${var.base_stack_name}-sd-ns"
+      value = var.redis_service_host
     },
     {
       name  = "POSTGRES_SERVICE_HOST"
@@ -79,8 +61,8 @@ locals {
       value = var.domain_name
     }
   ]
-  be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/backend:latest"
-  fe_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/frontend:latest"
+  be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.app_name}-backend:latest"
+  fe_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.app_name}-frontend:latest"
   host_name = "${terraform.workspace}.${var.domain_name}"
 }
 

@@ -1,3 +1,7 @@
+variable "app_name" {
+  type = string
+}
+
 variable "vpc_id" {
   type = string
 }
@@ -29,8 +33,15 @@ variable "alb_dns_name" {
 
 # Service Discovery
 
-variable "service_discovery_namespace_id" {
-  type = string
+# variable "service_discovery_namespace_id" {
+#   type = string
+# }
+
+# ElastiCache
+
+variable "redis_service_host" {
+  type        = string
+  description = "value of the REDIS_SERVICE_HOST environment variable"
 }
 
 # RDS

@@ -27,15 +27,24 @@ output "alb_dns_name" {
   value = module.lb.alb_dns_name
 }
 
-output "service_discovery_namespace_id" {
-  value       = module.sd.service_discovery_namespace_id
-  description = "service discovery namespace id"
-}
+# output "service_discovery_namespace_id" {
+#   value       = module.sd.service_discovery_namespace_id
+#   description = "service discovery namespace id"
+# }
 
 output "rds_address" {
   value       = module.rds.address
   description = "address of the RDS instance"
 }
+
+output "rds_password_secret_name" {
+  value = module.rds.rds_password_secret_name
+}
+
+output "redis_service_host" {
+  value = module.elasticache.redis_service_host
+}
+
 
 output "domain_name" {
   value = var.domain_name

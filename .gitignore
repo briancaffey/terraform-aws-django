@@ -5,3 +5,4 @@ local.tfvars
 backend.config
 errored.tfstate
 logs.txt
+.env
