@@ -209,3 +209,8 @@ variable "base_stack_name" {
   description = "Name of the base stack that the ad hoc env is created in."
   type        = string
 }
+
+variable "rds_password_secret_name" {
+  description = "The name of the AWS Secrets Manager secret used for the RDS instance"
+  type        = string
+}

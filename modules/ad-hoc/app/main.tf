@@ -33,6 +33,10 @@ data "aws_caller_identity" "current" {}
 locals {
   env_vars = [
     {
+      name  = "DB_SECRET_NAME"
+      value = var.rds_password_secret_name
+    },
+    {
       name  = "REDIS_SERVICE_HOST"
       value = var.redis_service_host
     },
