@@ -38,8 +38,14 @@ resource "random_password" "this"{
   override_special = "_!%^"
 }
 
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
 resource "aws_secretsmanager_secret" "this" {
-  name = "${terraform.workspace}/rds-password"
+  name = "${terraform.workspace}/rds-password/${random_string.suffix.result}"
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
