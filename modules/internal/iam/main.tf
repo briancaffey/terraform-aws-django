@@ -77,7 +77,10 @@ resource "aws_iam_role_policy" "ecs_task" {
       },
       {
         Effect   = "Allow"
-        Action   = ["secretsmanager:GetSecretValue"],
+        Action   = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
         Resource = ["*"] # TODO: parameterize this with a prefix value
       },
       # used for ECS Exec
