@@ -214,3 +214,27 @@ variable "rds_password_secret_name" {
   description = "The name of the AWS Secrets Manager secret used for the RDS instance"
   type        = string
 }
+
+variable "email_host" {
+  type = string
+  default = "smtp.gmail.com"
+}
+
+variable "email_port" {
+  type = string
+  default = "587"
+}
+
+variable "email_host_user" {
+  type = string
+}
+
+variable "email_host_password" {
+  type = string
+}
+
+variable "sentry_dsn" {
+  # like https://abc1234@1111111111.ingest.sentry.io/1234567890
+  type = string
+  default = ""
+}

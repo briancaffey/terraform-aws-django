@@ -32,13 +32,19 @@ data "aws_caller_identity" "current" {}
 
 locals {
   env_vars = [
+    # Environments
+    {
+      name = "APP_NAME"
+      value = terraform.workspace
+    },
+    {
+      name = "BASE_STACK_NAME"
+      value = var.base_stack_name
+    },
+    # Database
     {
       name  = "DB_SECRET_NAME"
       value = var.rds_password_secret_name
-    },
-    {
-      name  = "REDIS_SERVICE_HOST"
-      value = var.redis_service_host
     },
     {
       name  = "POSTGRES_SERVICE_HOST"
@@ -49,13 +55,20 @@ locals {
       value = "${terraform.workspace}-db"
     },
     {
-      name  = "DJANGO_SETTINGS_MODULE"
-      value = var.django_settings_module
+      name  = "REDIS_SERVICE_HOST"
+      value = var.redis_service_host
     },
+    # Static Files
     {
       name  = "S3_BUCKET_NAME"
       value = var.assets_bucket_name
     },
+    # Django settings
+    {
+      name  = "DJANGO_SETTINGS_MODULE"
+      value = var.django_settings_module
+    },
+    # Domain names
     {
       name  = "FRONTEND_URL"
       value = "https://${terraform.workspace}.${var.domain_name}"
@@ -63,6 +76,28 @@ locals {
     {
       name  = "DOMAIN_NAME"
       value = var.domain_name
+    },
+    # email
+    {
+      name  = "EMAIL_HOST"
+      value = var.email_host
+    },
+    {
+      name  = "EMAIL_PORT"
+      value = var.email_port
+    },
+    {
+      name  = "EMAIL_HOST_USER"
+      value = var.email_host_user
+    },
+    {
+      name  = "EMAIL_HOST_PASSWORD"
+      value = var.email_host_password
+    },
+    # sentry
+    {
+      name = "SENTRY_DSN"
+      value = var.sentry_dsn
     }
   ]
   be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.app_name}-backend:latest"
