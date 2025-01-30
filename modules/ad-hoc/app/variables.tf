@@ -104,7 +104,7 @@ variable "django_settings_module" {
 
 variable "frontend_command" {
   description = "Command to run in the frontend container"
-  default     = ["nginx", "-g", "daemon off;"]
+  default     = ["node", ".output/server/index.mjs"]
   type        = list(string)
 }
 
