@@ -108,12 +108,17 @@ module "web-ui" {
   task_role_arn      = module.iam.task_role_arn
   execution_role_arn = module.iam.execution_role_arn
   command            = var.frontend_command
-  env_vars           = []
+  env_vars           = [
+    {
+      name = "NUXT_PUBLIC_API_BASE"
+      value = "https://${terraform.workspace}.${var.domain_name}"
+    }
+  ]
   image              = local.fe_image
   region             = var.region
   cpu                = var.frontend_cpu
   memory             = var.frontend_memory
-  port               = 80
+  port               = 3000
   path_patterns      = ["/*"]
   health_check_path  = "/"
   listener_arn       = var.listener_arn
