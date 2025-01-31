@@ -58,6 +58,7 @@ module "s3" {
 module "sg" {
   source = "../../internal/sg"
   vpc_id = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
 }
 
 ###############################################################################

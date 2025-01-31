@@ -66,3 +66,11 @@ resource "aws_security_group" "app" {
     Name = "${terraform.workspace}-ecs-sg"
   }
 }
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id            = var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+  subnet_ids        = var.private_subnet_ids
+  security_group_ids = [aws_security_group.app.id]
+}
