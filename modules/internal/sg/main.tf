@@ -53,20 +53,20 @@ resource "aws_security_group" "app" {
   #   security_groups = [aws_security_group.vpc_endpoints.id]  # 🔹 Allow traffic to VPC endpoints
   # }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # egress {
+  #   from_port   = 0
+  #   to_port     = 0
+  #   protocol    = "-1"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
-  egress {
-    description = "Allow all outbound traffic to this SG"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    self        = true
-  }
+  # egress {
+  #   description = "Allow all outbound traffic to this SG"
+  #   from_port   = 0
+  #   to_port     = 0
+  #   protocol    = "-1"
+  #   self        = true
+  # }
 
   # https://github.com/aws/aws-cli/issues/5348
   # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html#synopsis
@@ -75,80 +75,80 @@ resource "aws_security_group" "app" {
   }
 }
 
-resource "aws_security_group" "vpc_endpoints" {
-  name        = "${terraform.workspace}-vpc-endpoints-sg"
-  description = "Allows ECS tasks to communicate with VPC endpoints"
-  vpc_id      = var.vpc_id
+# resource "aws_security_group" "vpc_endpoints" {
+#   name        = "${terraform.workspace}-vpc-endpoints-sg"
+#   description = "Allows ECS tasks to communicate with VPC endpoints"
+#   vpc_id      = var.vpc_id
 
-  # ingress {
-  #   from_port       = 443
-  #   to_port         = 443
-  #   protocol        = "tcp"
-  #   security_groups = [aws_security_group.app.id]  # Allow ECS tasks
-  # }
+#   # ingress {
+#   #   from_port       = 443
+#   #   to_port         = 443
+#   #   protocol        = "tcp"
+#   #   security_groups = [aws_security_group.app.id]  # Allow ECS tasks
+#   # }
 
-  # egress {
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   security_groups = [aws_security_group.app.id] # Allow return traffic
-  # }
+#   # egress {
+#   #   from_port   = 443
+#   #   to_port     = 443
+#   #   protocol    = "tcp"
+#   #   security_groups = [aws_security_group.app.id] # Allow return traffic
+#   # }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }
 
-resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.${var.region}.ecr.api"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.vpc_endpoints.id]
-  private_dns_enabled = true
-  tags = {
-    Name = "${terraform.workspace}-ecr-api"
-  }
-}
+# resource "aws_vpc_endpoint" "ecr_api" {
+#   vpc_id            = var.vpc_id
+#   service_name      = "com.amazonaws.${var.region}.ecr.api"
+#   vpc_endpoint_type = "Interface"
+#   subnet_ids        = var.private_subnet_ids
+#   security_group_ids = [aws_security_group.vpc_endpoints.id]
+#   private_dns_enabled = true
+#   tags = {
+#     Name = "${terraform.workspace}-ecr-api"
+#   }
+# }
 
-resource "aws_vpc_endpoint" "ecr_dkr" {
-  vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.${var.region}.ecr.dkr"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.vpc_endpoints.id]
-  private_dns_enabled = true
-  tags = {
-    Name = "${terraform.workspace}-ecr-dkr"
-  }
-}
+# resource "aws_vpc_endpoint" "ecr_dkr" {
+#   vpc_id            = var.vpc_id
+#   service_name      = "com.amazonaws.${var.region}.ecr.dkr"
+#   vpc_endpoint_type = "Interface"
+#   subnet_ids        = var.private_subnet_ids
+#   security_group_ids = [aws_security_group.vpc_endpoints.id]
+#   private_dns_enabled = true
+#   tags = {
+#     Name = "${terraform.workspace}-ecr-dkr"
+#   }
+# }
 
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.${var.region}.s3"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = var.route_table_ids
-}
+# resource "aws_vpc_endpoint" "s3" {
+#   vpc_id            = var.vpc_id
+#   service_name      = "com.amazonaws.${var.region}.s3"
+#   vpc_endpoint_type = "Gateway"
+#   route_table_ids   = var.route_table_ids
+# }
 
-# app -> vpc_endpoints egress
-resource "aws_security_group_rule" "app_to_vpc_endpoints" {
-  type              = "egress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.app.id
-  source_security_group_id = aws_security_group.vpc_endpoints.id
-}
+# # app -> vpc_endpoints egress
+# resource "aws_security_group_rule" "app_to_vpc_endpoints" {
+#   type              = "egress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "tcp"
+#   security_group_id = aws_security_group.app.id
+#   source_security_group_id = aws_security_group.vpc_endpoints.id
+# }
 
-# vpc_endpoints <- app ingress
-resource "aws_security_group_rule" "vpc_endpoints_from_app" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.vpc_endpoints.id
-  source_security_group_id = aws_security_group.app.id
-}
+# # vpc_endpoints <- app ingress
+# resource "aws_security_group_rule" "vpc_endpoints_from_app" {
+#   type              = "ingress"
+#   from_port         = 443
+#   to_port           = 443
+#   protocol          = "tcp"
+#   security_group_id = aws_security_group.vpc_endpoints.id
+#   source_security_group_id = aws_security_group.app.id
+# }
