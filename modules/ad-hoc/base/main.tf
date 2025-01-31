@@ -59,6 +59,7 @@ module "sg" {
   source = "../../internal/sg"
   vpc_id = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
+  route_table_ids = module.vpc.private_route_table_ids
 }
 
 ###############################################################################
@@ -89,15 +90,3 @@ module "rds" {
   rds_username       = var.rds_username
   rds_password       = var.rds_password
 }
-
-###############################################################################
-# Bastion host
-###############################################################################
-# TODO: remove this altogether as bastion host is not needed
-# module "bastion" {
-#   source             = "../../internal/bastion"
-#   vpc_id             = module.vpc.vpc_id
-#   app_sg_id          = module.sg.app_sg_id
-#   private_subnet_ids = module.vpc.private_subnets
-#   rds_address        = module.rds.address
-# }

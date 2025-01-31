@@ -67,12 +67,32 @@ resource "aws_security_group" "app" {
   }
 }
 
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "${terraform.workspace}-vpc-endpoints-sg"
+  description = "Allows ECS tasks to communicate with VPC endpoints"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.app.id]  # Allow ECS tasks
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = var.vpc_id
   service_name      = "com.amazonaws.${var.region}.ecr.api"
   vpc_endpoint_type = "Interface"
   subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.app.id]
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
@@ -80,5 +100,12 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   service_name      = "com.amazonaws.${var.region}.ecr.dkr"
   vpc_endpoint_type = "Interface"
   subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.app.id]
+  security_group_ids = [aws_security_group.vpc_endpoints.id]
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = var.vpc_id
+  service_name      = "com.amazonaws.${var.region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.private.id]
 }
