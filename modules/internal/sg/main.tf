@@ -80,19 +80,20 @@ resource "aws_security_group" "vpc_endpoints" {
   description = "Allows ECS tasks to communicate with VPC endpoints"
   vpc_id      = var.vpc_id
 
-  # ingress {
-  #   from_port       = 443
-  #   to_port         = 443
-  #   protocol        = "tcp"
-  #   security_groups = [aws_security_group.app.id]  # Allow ECS tasks
-  # }
+  # Allow inbound traffic from the ECS task security group
+  ingress {
+    from_port                = 443
+    to_port                  = 443
+    protocol                 = "tcp"
+    security_groups          = [aws_security_group.app.id]
+  }
 
-  # egress {
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   security_groups = [aws_security_group.app.id] # Allow return traffic
-  # }
+  ingress {
+    from_port                = 443
+    to_port                  = 443
+    protocol                 = "tcp"
+    self                     = true
+  }
 
   egress {
     from_port   = 0
