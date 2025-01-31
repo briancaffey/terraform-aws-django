@@ -45,13 +45,13 @@ resource "aws_security_group" "app" {
     self        = true
   }
 
-  # ✅ Allow outbound traffic to VPC endpoints for ECR
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    security_groups = [aws_security_group.vpc_endpoints.id]  # 🔹 Allow traffic to VPC endpoints
-  }
+  # # ✅ Allow outbound traffic to VPC endpoints for ECR
+  # egress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   security_groups = [aws_security_group.vpc_endpoints.id]  # 🔹 Allow traffic to VPC endpoints
+  # }
 
   egress {
     from_port   = 0
@@ -80,19 +80,19 @@ resource "aws_security_group" "vpc_endpoints" {
   description = "Allows ECS tasks to communicate with VPC endpoints"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app.id]  # Allow ECS tasks
-  }
+  # ingress {
+  #   from_port       = 443
+  #   to_port         = 443
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.app.id]  # Allow ECS tasks
+  # }
 
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    security_groups = [aws_security_group.app.id] # Allow return traffic
-  }
+  # egress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   security_groups = [aws_security_group.app.id] # Allow return traffic
+  # }
 
   egress {
     from_port   = 0
@@ -131,4 +131,24 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.region}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.route_table_ids
+}
+
+# app -> vpc_endpoints egress
+resource "aws_security_group_rule" "app_to_vpc_endpoints" {
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.app.id
+  source_security_group_id = aws_security_group.vpc_endpoints.id
+}
+
+# vpc_endpoints <- app ingress
+resource "aws_security_group_rule" "vpc_endpoints_from_app" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.vpc_endpoints.id
+  source_security_group_id = aws_security_group.app.id
 }
