@@ -88,6 +88,13 @@ resource "aws_security_group" "vpc_endpoints" {
   }
 
   egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    security_groups = [aws_security_group.app.id] # Allow return traffic
+  }
+
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -102,6 +109,9 @@ resource "aws_vpc_endpoint" "ecr_api" {
   subnet_ids        = var.private_subnet_ids
   security_group_ids = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
+  tags = {
+    Name = "${terraform.workspace}-ecr-api"
+  }
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
@@ -111,6 +121,9 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   subnet_ids        = var.private_subnet_ids
   security_group_ids = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
+  tags = {
+    Name = "${terraform.workspace}-ecr-dkr"
+  }
 }
 
 resource "aws_vpc_endpoint" "s3" {
@@ -119,12 +132,3 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.route_table_ids
 }
-
-# resource "aws_security_group_rule" "ecs_allow_https_to_vpc_endpoints" {
-#   type                     = "egress"
-#   from_port                = 443
-#   to_port                  = 443
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.app.id
-#   source_security_group_id = aws_security_group.vpc_endpoints.id
-# }
