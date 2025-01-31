@@ -238,3 +238,8 @@ variable "sentry_dsn" {
   type = string
   default = ""
 }
+
+variable "nvidia_api_key" {
+  type = string
+  default = ""
+}
