@@ -9,7 +9,7 @@ sudo yum update -y
 # Mount data volume if present and not already mounted
 DEVICE=$(lsblk -rpo "NAME,MOUNTPOINT" | awk '$2=="" {print $1}' | head -1)
 if [ -n "$DEVICE" ] && [ ! -d /data ]; then
-  if ! blkid "$DEVICE"; then
+  if ! blkid "$DEVICE" > /dev/null 2>&1; then
     sudo mkfs -t ext4 "$DEVICE"
   fi
   sudo mkdir -p /data
@@ -23,8 +23,7 @@ fi
 sudo yum install -y docker
 
 # ----------------------------------------------------
-# Create a drop-in file for docker.socket to force mode 0666.
-# This must be done BEFORE Docker is started.
+# Create a drop-in file for docker.socket to force mode 0666
 # ----------------------------------------------------
 sudo mkdir -p /etc/systemd/system/docker.socket.d
 cat <<'EOF' | sudo tee /etc/systemd/system/docker.socket.d/10-override.conf
@@ -36,6 +35,12 @@ EOF
 sudo systemctl daemon-reload
 
 ######################################
+# Enable and start docker.socket (ensure socket override is used)
+######################################
+sudo systemctl enable docker.socket
+sudo systemctl start docker.socket
+
+######################################
 # Now enable and start Docker
 ######################################
 sudo systemctl enable docker
@@ -44,7 +49,7 @@ sudo systemctl start docker
 # Immediately force the permissions in case Docker resets them
 sudo chmod 666 /var/run/docker.sock
 
-# Verify the Docker socket permissions (should show rw for everyone)
+# Verify the Docker socket permissions (should show srw-rw-rw- for a socket)
 echo "Docker socket permissions:"
 ls -l /var/run/docker.sock
 
@@ -60,7 +65,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/${docker_compo
   -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# Allow ssm-user to run docker commands without sudo (optional now)
+# Allow ssm-user to run docker and docker-compose commands without sudo
 echo "ssm-user ALL=(ALL) NOPASSWD: /usr/bin/docker, /usr/local/bin/docker-compose" \
   | sudo tee /etc/sudoers.d/ssm-user-docker
 
@@ -74,9 +79,9 @@ if [ ! -d "$APP_DIR" ]; then
 fi
 
 cd "$APP_DIR"
-sudo git fetch
+sudo git fetch --all
 sudo git checkout ${git_tag}
-sudo git pull origin ${git_tag}
+sudo git pull origin ${git_tag} || true
 
 ######################################
 # Create necessary directories for persistent data
@@ -106,6 +111,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable django-app.service
 sudo systemctl start django-app.service
 
-# ------------------------------
-# End of user data script.
-# ------------------------------
+echo "All done! Please start a new SSM session to pick up the updated docker group membership."

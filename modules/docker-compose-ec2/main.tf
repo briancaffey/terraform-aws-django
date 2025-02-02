@@ -1,3 +1,6 @@
+###############################################################################
+# Variables
+###############################################################################
 variable "git_tag" {
   description = "Git tag or branch to checkout"
   type        = string
@@ -7,36 +10,42 @@ variable "git_tag" {
 variable "docker_compose_version" {
   description = "Version of Docker Compose to install"
   type        = string
-  default     = "v2.20.0" # Default to a specific version
+  default     = "v2.20.0"
 }
 
 variable "git_repo" {
-  default = "https://github.com/briancaffey/django-step-by-step.git"
-  type = string
   description = "Git repo to use"
+  type        = string
+  default     = "https://github.com/briancaffey/django-step-by-step.git"
 }
 
-data "aws_ami" "ecs_optimized" {
-  most_recent = true
-  owners      = ["amazon"]
+###############################################################################
+# (Optional) Remove the old ecs_optimized AMI data source if not needed
+# data "aws_ami" "ecs_optimized" {
+#   most_recent = true
+#   owners      = ["amazon"]
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
-  }
+#   filter {
+#     name   = "name"
+#     values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
+#   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+# }
 
+###############################################################################
+# VPC and Subnet data sources
+###############################################################################
 data "aws_vpc" "default" {
   default = true
 }
 
 data "aws_subnet" "default" {
   vpc_id = data.aws_vpc.default.id
+
   filter {
     name   = "default-for-az"
     values = ["true"]
@@ -48,6 +57,9 @@ data "aws_subnet" "default" {
   }
 }
 
+###############################################################################
+# Security Group
+###############################################################################
 resource "aws_security_group" "app_sg" {
   name        = "app-sg"
   description = "Application security group"
@@ -67,7 +79,7 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # # Optional: Remove SSH rule if you don't need it
+  # Optional: Remove SSH rule if you don't need it
   # ingress {
   #   from_port   = 22
   #   to_port     = 22
@@ -83,6 +95,9 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
+###############################################################################
+# EBS Volume and Attachment
+###############################################################################
 resource "aws_ebs_volume" "data_volume" {
   availability_zone = data.aws_subnet.default.availability_zone
   size              = 20
@@ -98,7 +113,9 @@ resource "aws_volume_attachment" "data_vol_attach" {
   instance_id = aws_instance.app.id
 }
 
+###############################################################################
 # IAM Role for SSM
+###############################################################################
 resource "aws_iam_role" "ssm_role" {
   name = "ssm-role"
 
@@ -126,30 +143,33 @@ resource "aws_iam_instance_profile" "ssm_instance_profile" {
   role = aws_iam_role.ssm_role.name
 }
 
+###############################################################################
+# EC2 Instance (using the fixed AMI)
+###############################################################################
 resource "aws_instance" "app" {
-  ami                    = data.aws_ami.ecs_optimized.id
+  ami                    = "ami-001e311816e8c15d1"
   instance_type          = "t3.medium"
   subnet_id              = data.aws_subnet.default.id
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   user_data              = templatefile("${path.module}/user_data.sh.tpl", {
-    git_tag               = var.git_tag
+    git_tag                = var.git_tag
     docker_compose_version = var.docker_compose_version
-    git_repo = var.git_repo
+    git_repo               = var.git_repo
   })
   associate_public_ip_address = true
-  iam_instance_profile   = aws_iam_instance_profile.ssm_instance_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.ssm_instance_profile.name
 
-  # # Use spot instances for cost savings
+  # # (Optional) Use spot instances for cost savings
   # instance_market_options {
   #   market_type = "spot"
   #   spot_options {
-  #     max_price = "0.03" # Set your max bid price (adjust based on instance type)
+  #     max_price = "0.03" # Adjust based on instance type and your willingness to pay
   #   }
   # }
 
   root_block_device {
-    volume_size = 30
-    volume_type = "gp3"
+    volume_size           = 30
+    volume_type           = "gp3"
     delete_on_termination = false
   }
 
@@ -158,6 +178,9 @@ resource "aws_instance" "app" {
   }
 }
 
+###############################################################################
+# Output
+###############################################################################
 output "ssm_session_command" {
   description = "Command to start an interactive shell on the EC2 instance using AWS SSM Session Manager"
   value       = "aws ssm start-session --target ${aws_instance.app.id} --region ${var.region}"
