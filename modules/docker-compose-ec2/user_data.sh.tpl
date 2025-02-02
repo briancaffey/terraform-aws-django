@@ -41,19 +41,25 @@ fi
 ######################################
 # 3. Clone your repository and check out the desired tag
 ######################################
-APP_DIR="/opt/django-step-by-step"
+APP_DIR="/home/ssm-user"
 
 # Install Git if needed
 sudo apt-get install -y git
 
 if [ ! -d "$APP_DIR" ]; then
-  sudo git clone "${git_repo}" "$APP_DIR"
+  git clone "${git_repo}" "$APP_DIR"
 fi
 
 cd "$APP_DIR"
-sudo git fetch --all
-sudo git checkout "${git_tag}"
-sudo git pull origin "${git_tag}" || true
+git fetch --all
+git checkout "${git_tag}"
+git pull origin "${git_tag}" || true
+
+cd django-step-by-step
+# docker compose commands to create the SSL certificate with certbot
+docker compose -p app -f docker-compose.ec2.init.yml up -d nginx-init
+docker compose -p app -f docker-compose.ec2.init.yml run --rm certbot-init
+docker compose -p app -f docker-compose.ec2.init.yml down nginx-init
 
 ######################################
 # 4. Create directories for persistent data
@@ -63,7 +69,7 @@ sudo mkdir -p /data/postgres /data/redis /data/etcd
 ######################################
 # 5. Create a systemd service to run Docker Compose
 ######################################
-cat <<EOF | sudo tee /etc/systemd/system/django-app.service
+cat <<EOF | sudo tee /etc/systemd/system/app.service
 [Unit]
 Description=Django Application
 Requires=docker.service
@@ -71,9 +77,9 @@ After=docker.service
 
 [Service]
 Restart=always
-WorkingDirectory=$APP_DIR
-ExecStart=/usr/local/bin/docker-compose up -d
-ExecStop=/usr/local/bin/docker-compose down
+WorkingDirectory=$APP_DIR/
+ExecStart=/usr/local/bin/docker compose -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml up -d
+ExecStop=/usr/local/bin/docker compose -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml down
 
 [Install]
 WantedBy=multi-user.target
@@ -81,8 +87,8 @@ EOF
 
 # Enable and start the systemd service
 sudo systemctl daemon-reload
-sudo systemctl enable django-app.service
-sudo systemctl start django-app.service
+sudo systemctl enable app.service
+sudo systemctl start app.service
 
 echo "Rebooting the instance to finalize group membership changes..."
 sleep 2
