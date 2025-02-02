@@ -71,7 +71,7 @@ resource "aws_iam_role_policy" "ecs_task" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = Allow,
+        Effect = "Allow",
         Action = [
           "ses:SendEmail",
           "ses:SendRawEmail",
