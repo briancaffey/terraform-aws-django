@@ -1,6 +1,17 @@
 ###############################################################################
 # Variables
 ###############################################################################
+variable "domain_name" {
+  type = string
+  description = "domain on which to run application"
+}
+
+variable "app_name" {
+  type = string
+  description = "The name of the environment"
+  default = "ec2"
+}
+
 variable "git_tag" {
   description = "Git tag or branch to checkout"
   type        = string
@@ -176,6 +187,22 @@ resource "aws_instance" "app" {
   tags = {
     Name = "docker-app-instance"
   }
+}
+
+###############################################################################
+# Route 53 record
+###############################################################################
+data "aws_route53_zone" "primary" {
+  name         = "${var.domain_name}."
+  private_zone = false
+}
+
+resource "aws_route53_record" "app" {
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name    = "${var.app_name}.${var.domain_name}"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.app.public_ip]
 }
 
 ###############################################################################
