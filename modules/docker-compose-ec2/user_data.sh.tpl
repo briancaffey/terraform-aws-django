@@ -20,17 +20,26 @@ sudo yum install -y docker
 sudo systemctl enable docker
 sudo systemctl start docker
 
-# Add ssm-user to docker group
+# Create a systemd drop-in to set Docker socket permissions permanently to 0666
+sudo mkdir -p /etc/systemd/system/docker.socket.d
+cat <<'EOF' | sudo tee /etc/systemd/system/docker.socket.d/override.conf
+[Socket]
+SocketMode=0666
+EOF
+
+# Reload systemd configuration and restart the docker.socket so the change takes effect
+sudo systemctl daemon-reload
+sudo systemctl restart docker.socket
+
+# Add ssm-user to docker group (good to have, even though our drop-in makes the socket world-accessible)
 sudo usermod -aG docker ssm-user
 
-# Fix permissions so ssm-user can access Docker socket
-sudo chmod 666 /var/run/docker.sock
-
 # Install Docker Compose
+# (Make sure the variable ${docker_compose_version} is defined in your launch parameters/environment)
 sudo curl -L "https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# Ensure ssm-user can run docker without sudo
+# Ensure ssm-user can run docker commands without sudo (optional once socket is 0666, but useful for sudo-free commands)
 echo "ssm-user ALL=(ALL) NOPASSWD: /usr/bin/docker, /usr/local/bin/docker-compose" | sudo tee /etc/sudoers.d/ssm-user-docker
 
 # Clone repository
@@ -71,5 +80,5 @@ sudo systemctl daemon-reload
 sudo systemctl enable django-app.service
 sudo systemctl start django-app.service
 
-# Reboot to apply group membership changes without manual intervention
+# Reboot to finalize any lingering group membership changes (optional, but recommended)
 sudo reboot
