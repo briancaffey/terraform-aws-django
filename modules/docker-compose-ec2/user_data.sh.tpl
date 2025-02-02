@@ -57,9 +57,10 @@ git pull origin "${git_tag}" || true
 
 cd django-step-by-step
 # docker compose commands to create the SSL certificate with certbot
-docker compose -p app -f docker-compose.ec2.init.yml up -d nginx-init
-docker compose -p app -f docker-compose.ec2.init.yml run --rm certbot-init
-docker compose -p app -f docker-compose.ec2.init.yml down nginx-init
+docker compose -p app -f docker-compose.ec2.init.yml run --rm config-generator # generate nginx configs
+docker compose -p app -f docker-compose.ec2.init.yml up -d nginx-init # start the http server
+docker compose -p app -f docker-compose.ec2.init.yml run --rm certbot-init # generate certs with certbot
+docker compose -p app -f docker-compose.ec2.init.yml down nginx-init # stop the http server
 
 ######################################
 # 4. Create directories for persistent data
@@ -78,8 +79,8 @@ After=docker.service
 [Service]
 Restart=always
 WorkingDirectory=$APP_DIR/
-ExecStart=/usr/local/bin/docker compose -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml up -d
-ExecStop=/usr/local/bin/docker compose -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml down
+ExecStart=/usr/local/bin/docker compose -p app -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml up -d
+ExecStop=/usr/local/bin/docker compose -p app -f /home/ssm-user/django-step-by-step/nginx/ec2/docker-compose.ec2.yml down
 
 [Install]
 WantedBy=multi-user.target
