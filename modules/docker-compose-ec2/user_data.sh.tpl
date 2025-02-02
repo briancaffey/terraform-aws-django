@@ -1,64 +1,89 @@
 #!/bin/bash
-set -e  # Exit immediately if a command exits with a non-zero status.
+set -e  # Exit immediately if any command exits with a non-zero status.
 
-# Ensure all packages are up-to-date
+# ------------------------------
+# Update system and mount volume
+# ------------------------------
 sudo yum update -y
 
-# Mount data volume
+# Mount data volume if present and not already mounted
 DEVICE=$(lsblk -rpo "NAME,MOUNTPOINT" | awk '$2==""{print $1}' | head -1)
-if [ ! -z "$DEVICE" ] && [ ! -d /data ]; then
-  if ! blkid $DEVICE; then
-    sudo mkfs -t ext4 $DEVICE
+if [ -n "$DEVICE" ] && [ ! -d /data ]; then
+  if ! blkid "$DEVICE"; then
+    sudo mkfs -t ext4 "$DEVICE"
   fi
   sudo mkdir -p /data
-  sudo mount $DEVICE /data
+  sudo mount "$DEVICE" /data
   echo "$DEVICE /data ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
 fi
 
-# Install Docker and start service
+# ------------------------------
+# Install Docker (but DO NOT start it yet)
+# ------------------------------
 sudo yum install -y docker
-sudo systemctl enable docker
-sudo systemctl start docker
 
-# Create a systemd drop-in to set Docker socket permissions permanently to 0666
+# -------------------------------------------
+# Create a systemd drop-in for docker.socket
+# This will force the socket permissions to 0666.
+# Place this override BEFORE docker is started.
+# -------------------------------------------
 sudo mkdir -p /etc/systemd/system/docker.socket.d
-cat <<'EOF' | sudo tee /etc/systemd/system/docker.socket.d/override.conf
+cat <<'EOF' | sudo tee /etc/systemd/system/docker.socket.d/10-override.conf
 [Socket]
 SocketMode=0666
 EOF
 
-# Reload systemd configuration and restart the docker.socket so the change takes effect
+# Reload systemd so it picks up the drop-in
 sudo systemctl daemon-reload
-sudo systemctl restart docker.socket
 
-# Add ssm-user to docker group (good to have, even though our drop-in makes the socket world-accessible)
+# ------------------------------
+# Now enable and start Docker
+# ------------------------------
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# (Optional) Verify the Docker socket permissions
+ls -l /var/run/docker.sock
+
+# ------------------------------
+# Add ssm-user to the docker group (good practice even though the socket is open)
+# ------------------------------
 sudo usermod -aG docker ssm-user
 
+# ------------------------------
 # Install Docker Compose
-# (Make sure the variable ${docker_compose_version} is defined in your launch parameters/environment)
-sudo curl -L "https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# ------------------------------
+# (Ensure ${docker_compose_version} is set correctly)
+sudo curl -L "https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)" \
+  -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# Ensure ssm-user can run docker commands without sudo (optional once socket is 0666, but useful for sudo-free commands)
-echo "ssm-user ALL=(ALL) NOPASSWD: /usr/bin/docker, /usr/local/bin/docker-compose" | sudo tee /etc/sudoers.d/ssm-user-docker
+# Allow ssm-user to run docker and docker-compose without sudo (optional now)
+echo "ssm-user ALL=(ALL) NOPASSWD: /usr/bin/docker, /usr/local/bin/docker-compose" \
+  | sudo tee /etc/sudoers.d/ssm-user-docker
 
-# Clone repository
+# ------------------------------
+# Clone your repository and checkout the desired tag
+# ------------------------------
 APP_DIR="/opt/django-step-by-step"
 if [ ! -d "$APP_DIR" ]; then
   sudo yum install -y git
-  sudo git clone ${git_repo} $APP_DIR
+  sudo git clone ${git_repo} "$APP_DIR"
 fi
 
-# Checkout specified Git reference
-cd $APP_DIR
+cd "$APP_DIR"
 sudo git fetch
 sudo git checkout ${git_tag}
 sudo git pull origin ${git_tag}
 
-# Create necessary directories
+# ------------------------------
+# Create necessary directories for data
+# ------------------------------
 sudo mkdir -p /data/postgres /data/redis /data/etcd
 
-# Configure systemd service for Docker Compose
+# ------------------------------
+# Create a systemd service for your Docker Compose-based app
+# ------------------------------
 cat <<EOF | sudo tee /etc/systemd/system/django-app.service
 [Unit]
 Description=Django Application
@@ -75,10 +100,10 @@ ExecStop=/usr/local/bin/docker-compose down
 WantedBy=multi-user.target
 EOF
 
-# Reload systemd, enable, and start the service
 sudo systemctl daemon-reload
 sudo systemctl enable django-app.service
 sudo systemctl start django-app.service
 
-# Reboot to finalize any lingering group membership changes (optional, but recommended)
-sudo reboot
+# ------------------------------
+# (No reboot is necessary now)
+# ------------------------------
