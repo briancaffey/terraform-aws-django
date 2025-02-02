@@ -57,7 +57,7 @@ git pull origin "${git_tag}" || true
 
 cd django-step-by-step
 # docker compose commands to create the SSL certificate with certbot
-docker compose -p app -f nginx/ec2/docker-compose.ec2.init.yml run --rm config-generator # generate nginx configs
+docker compose -p app -f nginx/ec2/docker-compose.ec2.init.yml run --rm -e DOMAIN_NAME=${domain_name} config-generator # generate nginx configs
 docker compose -p app -f nginx/ec2/docker-compose.ec2.init.yml up -d nginx-init # start the http server
 docker compose -p app -f nginx/ec2/docker-compose.ec2.init.yml run --rm certbot-init # generate certs with certbot
 docker compose -p app -f nginx/ec2/docker-compose.ec2.init.yml down nginx-init # stop the http server

@@ -166,6 +166,7 @@ resource "aws_instance" "app" {
     git_tag                = var.git_tag
     docker_compose_version = var.docker_compose_version
     git_repo               = var.git_repo
+    domain_name            = var.domain_name
   })
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.ssm_instance_profile.name
