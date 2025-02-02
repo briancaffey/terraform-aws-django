@@ -71,6 +71,21 @@ resource "aws_iam_role_policy" "ecs_task" {
     Version = "2012-10-17"
     Statement = [
       {
+        Effect = Allow
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail",
+          "ses:SendBulkEmail",
+          "ses:SendBulkTemplatedEmail"
+        ],
+        Resource = "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": ["sns:ConfirmSubscription"],
+        "Resource": ["arn:aws:sns:*:*:*"]
+      },
+      {
         Effect   = "Allow"
         Action   = [
           "ecr:GetAuthorizationToken",
