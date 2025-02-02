@@ -2,11 +2,32 @@
 set -e  # Exit immediately if any command exits with a non-zero status.
 
 ######################################
-# Update system and mount data volume
+# 1. Install Docker and Docker Compose
 ######################################
-sudo yum update -y
+# Add Docker’s official GPG key and repository for Ubuntu 24.04
+sudo apt-get update -y
+sudo apt-get install -y ca-certificates curl gnupg
 
-# Mount data volume if present and not already mounted
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add Docker’s apt repository (for stable releases)
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install Docker Engine, Docker CLI, and Docker Compose plugin
+sudo apt-get update -y
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Add ssm-user to the docker group (so it can run Docker without sudo)
+sudo usermod -aG docker ssm-user
+
+######################################
+# 2. Mount data volume (if attached)
+######################################
 DEVICE=$(lsblk -rpo "NAME,MOUNTPOINT" | awk '$2=="" {print $1}' | head -1)
 if [ -n "$DEVICE" ] && [ ! -d /data ]; then
   if ! blkid "$DEVICE" > /dev/null 2>&1; then
@@ -18,78 +39,29 @@ if [ -n "$DEVICE" ] && [ ! -d /data ]; then
 fi
 
 ######################################
-# Install Docker (but do NOT start it yet)
-######################################
-sudo yum install -y docker
-
-# ----------------------------------------------------
-# Create a drop-in file for docker.socket to force mode 0666
-# ----------------------------------------------------
-sudo mkdir -p /etc/systemd/system/docker.socket.d
-cat <<'EOF' | sudo tee /etc/systemd/system/docker.socket.d/10-override.conf
-[Socket]
-SocketMode=0666
-EOF
-
-# Reload systemd to pick up the drop-in
-sudo systemctl daemon-reload
-
-######################################
-# Enable and start docker.socket (ensure socket override is used)
-######################################
-sudo systemctl enable docker.socket
-sudo systemctl start docker.socket
-
-######################################
-# Now enable and start Docker
-######################################
-sudo systemctl enable docker
-sudo systemctl start docker
-
-# Immediately force the permissions in case Docker resets them
-sudo chmod 666 /var/run/docker.sock
-
-# Verify the Docker socket permissions (should show srw-rw-rw- for a socket)
-echo "Docker socket permissions:"
-ls -l /var/run/docker.sock
-
-######################################
-# Add ssm-user to the docker group
-######################################
-sudo usermod -aG docker ssm-user
-
-######################################
-# Install Docker Compose
-######################################
-sudo curl -L "https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)" \
-  -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-# Allow ssm-user to run docker and docker-compose commands without sudo
-echo "ssm-user ALL=(ALL) NOPASSWD: /usr/bin/docker, /usr/local/bin/docker-compose" \
-  | sudo tee /etc/sudoers.d/ssm-user-docker
-
-######################################
-# Clone your repository and check out the desired tag
+# 3. Clone your repository and check out the desired tag
 ######################################
 APP_DIR="/opt/django-step-by-step"
+
+# Install Git if needed
+sudo apt-get install -y git
+
 if [ ! -d "$APP_DIR" ]; then
-  sudo yum install -y git
-  sudo git clone ${git_repo} "$APP_DIR"
+  sudo git clone "${git_repo}" "$APP_DIR"
 fi
 
 cd "$APP_DIR"
 sudo git fetch --all
-sudo git checkout ${git_tag}
-sudo git pull origin ${git_tag} || true
+sudo git checkout "${git_tag}"
+sudo git pull origin "${git_tag}" || true
 
 ######################################
-# Create necessary directories for persistent data
+# 4. Create directories for persistent data
 ######################################
 sudo mkdir -p /data/postgres /data/redis /data/etcd
 
 ######################################
-# Create a systemd service to run Docker Compose
+# 5. Create a systemd service to run Docker Compose
 ######################################
 cat <<EOF | sudo tee /etc/systemd/system/django-app.service
 [Unit]
@@ -107,8 +79,11 @@ ExecStop=/usr/local/bin/docker-compose down
 WantedBy=multi-user.target
 EOF
 
+# Enable and start the systemd service
 sudo systemctl daemon-reload
 sudo systemctl enable django-app.service
 sudo systemctl start django-app.service
 
-echo "All done! Please start a new SSM session to pick up the updated docker group membership."
+echo "Rebooting the instance to finalize group membership changes..."
+sleep 2
+sudo reboot

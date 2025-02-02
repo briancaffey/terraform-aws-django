@@ -147,8 +147,8 @@ resource "aws_iam_instance_profile" "ssm_instance_profile" {
 # EC2 Instance (using the fixed AMI)
 ###############################################################################
 resource "aws_instance" "app" {
-  ami                    = "ami-001e311816e8c15d1"
-  instance_type          = "t3.medium"
+  ami                    = "ami-0a7a4e87939439934"
+  instance_type          = "t4g.medium"
   subnet_id              = data.aws_subnet.default.id
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   user_data              = templatefile("${path.module}/user_data.sh.tpl", {
@@ -182,6 +182,12 @@ resource "aws_instance" "app" {
 # Output
 ###############################################################################
 output "ssm_session_command" {
-  description = "Command to start an interactive shell on the EC2 instance using AWS SSM Session Manager"
-  value       = "aws ssm start-session --target ${aws_instance.app.id} --region ${var.region}"
+  description = "Command to start an interactive Bash login shell on the EC2 instance using AWS SSM Session Manager"
+  value = <<-EOT
+aws ssm start-session \
+  --target ${aws_instance.app.id} \
+  --document-name AWS-StartInteractiveCommand \
+  --parameters command="bash -l" \
+  --region ${var.region}
+EOT
 }
