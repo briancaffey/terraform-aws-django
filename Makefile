@@ -9,30 +9,30 @@ tf-validate:
 # ad hoc environment stacks
 
 # ad hoc base
-ad-hoc-base-init:
-	terraform -chdir=examples/ad-hoc/base init
+ecs-base-init:
+	terraform -chdir=examples/ecs/base init
 
-ad-hoc-base-plan:
-	terraform -chdir=examples/ad-hoc/base plan
+ecs-base-plan:
+	terraform -chdir=examples/ecs/base plan
 
-ad-hoc-base-apply:
-	terraform -chdir=examples/ad-hoc/base apply
+ecs-base-apply:
+	terraform -chdir=examples/ecs/base apply
 
-ad-hoc-base-destroy:
-	terraform -chdir=examples/ad-hoc/base destroy
+ecs-base-destroy:
+	terraform -chdir=examples/ecs/base destroy
 
 # ad hoc app
-ad-hoc-app-init:
-	terraform -chdir=examples/ad-hoc/app init
+ecs-app-init:
+	terraform -chdir=examples/ecs/app init
 
-ad-hoc-app-plan:
-	terraform -chdir=examples/ad-hoc/app plan
+ecs-app-plan:
+	terraform -chdir=examples/ecs/app plan
 
-ad-hoc-app-apply:
-	terraform -chdir=examples/ad-hoc/app apply
+ecs-app-apply:
+	terraform -chdir=examples/ecs/app apply
 
-ad-hoc-app-destroy:
-	terraform -chdir=examples/ad-hoc/app destroy
+ecs-app-destroy:
+	terraform -chdir=examples/ecs/app destroy
 
 # prod environment stacks
 

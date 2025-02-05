@@ -3,7 +3,15 @@
 ###############################################################################
 
 module "ecs" {
-  source = "../../internal/ecs/prod/cluster"
+  source = "../../internal/ecs/cluster"
+}
+
+###############################################################################
+# IAM
+###############################################################################
+
+module "iam" {
+  source = "../../internal/iam"
 }
 
 ###############################################################################
@@ -24,9 +32,19 @@ data "aws_caller_identity" "current" {}
 
 locals {
   env_vars = [
+    # Environments
     {
-      name  = "REDIS_SERVICE_HOST"
-      value = var.redis_service_host
+      name = "APP_NAME"
+      value = terraform.workspace
+    },
+    {
+      name = "BASE_STACK_NAME"
+      value = var.base_stack_name
+    },
+    # Database
+    {
+      name  = "DB_SECRET_NAME"
+      value = var.rds_password_secret_name
     },
     {
       name  = "POSTGRES_SERVICE_HOST"
@@ -34,16 +52,23 @@ locals {
     },
     {
       name  = "POSTGRES_NAME"
-      value = var.db_name
+      value = "${terraform.workspace}-db"
     },
     {
-      name  = "DJANGO_SETTINGS_MODULE"
-      value = var.django_settings_module
+      name  = "REDIS_SERVICE_HOST"
+      value = var.redis_service_host
     },
+    # Static Files
     {
       name  = "S3_BUCKET_NAME"
       value = var.assets_bucket_name
     },
+    # Django settings
+    {
+      name  = "DJANGO_SETTINGS_MODULE"
+      value = var.django_settings_module
+    },
+    # Domain names
     {
       name  = "FRONTEND_URL"
       value = "https://${terraform.workspace}.${var.domain_name}"
@@ -51,10 +76,38 @@ locals {
     {
       name  = "DOMAIN_NAME"
       value = var.domain_name
+    },
+    # email
+    {
+      name  = "EMAIL_HOST"
+      value = var.email_host
+    },
+    {
+      name  = "EMAIL_PORT"
+      value = var.email_port
+    },
+    {
+      name  = "EMAIL_HOST_USER"
+      value = var.email_host_user
+    },
+    {
+      name  = "EMAIL_HOST_PASSWORD"
+      value = var.email_host_password
+    },
+    # sentry
+    {
+      name = "SENTRY_DSN"
+      value = var.sentry_dsn
+    },
+    # AI inference API keys
+    {
+      name = "NVIDIA_API_KEY"
+      value = var.nvidia_api_key
     }
+
   ]
-  be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/backend:latest"
-  fe_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/frontend:latest"
+  be_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.app_name}-backend:latest"
+  fe_image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.app_name}-frontend:latest"
   host_name = "${terraform.workspace}.${var.domain_name}"
 }
 
@@ -63,16 +116,15 @@ locals {
 ###############################################################################
 
 module "api" {
-  source             = "../../internal/ecs/prod/web"
+  source             = "../../internal/ecs/web"
   name               = "gunicorn"
   ecs_cluster_id     = module.ecs.cluster_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  execution_role_arn = module.iam.execution_role_arn
   app_sg_id          = var.app_sg_id
   command            = var.api_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
-  region             = var.region
   cpu                = var.api_cpu
   memory             = var.api_memory
   port               = 8000
@@ -82,34 +134,32 @@ module "api" {
   vpc_id             = var.vpc_id
   private_subnet_ids = var.private_subnet_ids
   host_name          = local.host_name
+  region             = var.region
 }
-
-module "api_autoscaling" {
-  source       = "../../internal/autoscaling"
-  cluster_name = "${terraform.workspace}-cluster"
-  service_name = "${terraform.workspace}-gunicorn"
-  depends_on   = [module.api]
-}
-
 
 ###############################################################################
 # Frontend ECS Service
 ###############################################################################
 
 module "web-ui" {
-  source             = "../../internal/ecs/prod/web"
+  source             = "../../internal/ecs/web"
   name               = "web-ui"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  execution_role_arn = module.iam.execution_role_arn
   command            = var.frontend_command
-  env_vars           = []
+  env_vars           = [
+    {
+      name = "NUXT_PUBLIC_API_BASE"
+      value = "https://${terraform.workspace}.${var.domain_name}"
+    }
+  ]
   image              = local.fe_image
   region             = var.region
   cpu                = var.frontend_cpu
   memory             = var.frontend_memory
-  port               = 80
+  port               = 3000
   path_patterns      = ["/*"]
   health_check_path  = "/"
   listener_arn       = var.listener_arn
@@ -127,12 +177,12 @@ module "web-ui" {
 ###############################################################################
 
 module "default_celery_worker" {
-  source             = "../../internal/ecs/prod/celery_worker"
+  source             = "../../internal/ecs/celery_worker"
   name               = "default"
   app_sg_id          = var.app_sg_id
   ecs_cluster_id     = module.ecs.cluster_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  execution_role_arn = module.iam.execution_role_arn
   command            = var.default_celery_worker_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
@@ -142,25 +192,17 @@ module "default_celery_worker" {
   private_subnet_ids = var.private_subnet_ids
 }
 
-module "default_celery_worker_autoscaling" {
-  source       = "../../internal/autoscaling"
-  cluster_name = "${terraform.workspace}-cluster"
-  service_name = "${terraform.workspace}-default"
-  depends_on   = [module.default_celery_worker]
-}
-
-
 ###############################################################################
 # Celery Beat
 ###############################################################################
 
 module "celery_beat" {
-  source             = "../../internal/ecs/prod/celery_beat"
+  source             = "../../internal/ecs/celery_beat"
   name               = "beat"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  execution_role_arn = module.iam.execution_role_arn
   command            = var.celery_beat_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image
@@ -175,12 +217,12 @@ module "celery_beat" {
 ###############################################################################
 
 module "backend_update" {
+  source             = "../../internal/ecs/management_command"
   name               = "backend_update"
-  source             = "../../internal/ecs/prod/management_command"
   ecs_cluster_id     = module.ecs.cluster_id
   app_sg_id          = var.app_sg_id
-  task_role_arn      = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  execution_role_arn = module.iam.execution_role_arn
   command            = var.backend_update_command
   env_vars           = concat(local.env_vars, var.extra_env_vars)
   image              = local.be_image

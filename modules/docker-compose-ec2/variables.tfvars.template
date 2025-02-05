@@ -1,0 +1,3 @@
+app_name = "alpha"
+domain_name = "example.com"
+git_tag = "v1.2.3"

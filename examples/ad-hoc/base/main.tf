@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 module "main" {
-  source          = "../../../modules/ad-hoc/base"
+  source          = "../../../modules/ecs/base"
   certificate_arn = var.certificate_arn
   domain_name     = var.domain_name
 }

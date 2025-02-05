@@ -22,6 +22,17 @@ module "vpc" {
 }
 
 ###############################################################################
+# ElastiCache
+###############################################################################
+
+module "elasticache" {
+  source             = "../../internal/elasticache"
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  app_sg_id          = module.sg.app_sg_id
+}
+
+###############################################################################
 # S3 - TODO add S3 bucket resource for app assets
 ###############################################################################
 
@@ -32,12 +43,14 @@ module "s3" {
 }
 
 ###############################################################################
-# SG
+# Security groups
 ###############################################################################
 
 module "sg" {
   source = "../../internal/sg"
   vpc_id = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  route_table_ids = module.vpc.private_route_table_ids
 }
 
 ###############################################################################
@@ -50,14 +63,6 @@ module "lb" {
   public_subnets  = module.vpc.public_subnets
   alb_sg_id       = module.sg.alb_sg_id
   certificate_arn = var.certificate_arn
-}
-
-###############################################################################
-# IAM
-###############################################################################
-
-module "iam" {
-  source = "../../internal/iam"
 }
 
 ###############################################################################
@@ -75,27 +80,4 @@ module "rds" {
   rds_db_name        = var.rds_db_name
   rds_username       = var.rds_username
   rds_password       = var.rds_password
-}
-
-###############################################################################
-# ElastiCache
-###############################################################################
-
-module "elasticache" {
-  source             = "../../internal/elasticache"
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnets
-  app_sg_id          = module.sg.app_sg_id
-}
-
-###############################################################################
-# Bastion Host
-###############################################################################
-
-module "bastion" {
-  source             = "../../internal/bastion"
-  vpc_id             = module.vpc.vpc_id
-  app_sg_id          = module.sg.app_sg_id
-  private_subnet_ids = module.vpc.private_subnets
-  rds_address        = module.rds.address
 }

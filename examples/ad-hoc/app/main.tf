@@ -24,7 +24,7 @@ data "terraform_remote_state" "this" {
 }
 
 module "main" {
-  source = "../../../modules/ad-hoc/app"
+  source = "../../../modules/ecs/app"
 
   vpc_id                         = data.terraform_remote_state.this.outputs.vpc_id
   assets_bucket_name             = data.terraform_remote_state.this.outputs.assets_bucket_name
