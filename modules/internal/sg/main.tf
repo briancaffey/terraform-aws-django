@@ -4,13 +4,13 @@ resource "aws_security_group" "alb" {
   vpc_id      = var.vpc_id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-  ip_protocol                  = "tcp"
-  to_port = 80
-  from_port = 80
-  cidr_ipv4 = "0.0.0.0/0"
-  security_group_id            = aws_security_group.alb.id
-}
+# resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
+#   ip_protocol                  = "tcp"
+#   to_port = 80
+#   from_port = 80
+#   cidr_ipv4 = "0.0.0.0/0"
+#   security_group_id            = aws_security_group.alb.id
+# }
 
 resource "aws_security_group" "app" {
   name        = "${terraform.workspace}-app-sg"
