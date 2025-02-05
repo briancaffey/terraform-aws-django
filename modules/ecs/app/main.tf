@@ -34,11 +34,11 @@ locals {
   env_vars = [
     # Environments
     {
-      name = "APP_NAME"
+      name  = "APP_NAME"
       value = terraform.workspace
     },
     {
-      name = "BASE_STACK_NAME"
+      name  = "BASE_STACK_NAME"
       value = var.base_stack_name
     },
     # Database
@@ -96,12 +96,12 @@ locals {
     },
     # sentry
     {
-      name = "SENTRY_DSN"
+      name  = "SENTRY_DSN"
       value = var.sentry_dsn
     },
     # AI inference API keys
     {
-      name = "NVIDIA_API_KEY"
+      name  = "NVIDIA_API_KEY"
       value = var.nvidia_api_key
     }
 
@@ -149,9 +149,9 @@ module "web-ui" {
   task_role_arn      = module.iam.task_role_arn
   execution_role_arn = module.iam.execution_role_arn
   command            = var.frontend_command
-  env_vars           = [
+  env_vars = [
     {
-      name = "NUXT_PUBLIC_API_BASE"
+      name  = "NUXT_PUBLIC_API_BASE"
       value = "https://${terraform.workspace}.${var.domain_name}"
     }
   ]

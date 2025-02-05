@@ -66,10 +66,10 @@ resource "aws_security_group" "vpc_endpoints" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port                = 443
-    to_port                  = 443
-    protocol                 = "tcp"
-    self                     = true
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+    self      = true
   }
 
   egress {
@@ -81,11 +81,11 @@ resource "aws_security_group" "vpc_endpoints" {
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.${var.region}.ecr.api"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
   tags = {
     Name = "${terraform.workspace}-ecr-api"
@@ -93,11 +93,11 @@ resource "aws_vpc_endpoint" "ecr_api" {
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
-  vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.${var.region}.ecr.dkr"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = var.private_subnet_ids
-  security_group_ids = [aws_security_group.vpc_endpoints.id]
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
   private_dns_enabled = true
   tags = {
     Name = "${terraform.workspace}-ecr-dkr"
@@ -113,11 +113,11 @@ resource "aws_vpc_endpoint" "s3" {
 
 # app -> vpc_endpoints egress
 resource "aws_security_group_rule" "app_to_vpc_endpoints" {
-  type              = "egress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.app.id
+  type                     = "egress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.app.id
   source_security_group_id = aws_security_group.vpc_endpoints.id
 }
 
@@ -132,10 +132,10 @@ resource "aws_security_group_rule" "ecs_allow_https_to_vpc_endpoints" {
 
 # vpc_endpoints <- app ingress
 resource "aws_security_group_rule" "vpc_endpoints_from_app" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.vpc_endpoints.id
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.vpc_endpoints.id
   source_security_group_id = aws_security_group.app.id
 }

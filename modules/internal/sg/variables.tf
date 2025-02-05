@@ -7,11 +7,11 @@ variable "private_subnet_ids" {
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 
 variable "route_table_ids" {
-  type = list(string)
+  type        = list(string)
   description = "Route table ids"
 }

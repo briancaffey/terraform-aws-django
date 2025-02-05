@@ -2,14 +2,14 @@
 # Variables
 ###############################################################################
 variable "domain_name" {
-  type = string
+  type        = string
   description = "domain on which to run application"
 }
 
 variable "app_name" {
-  type = string
+  type        = string
   description = "The name of the environment"
-  default = "ec2"
+  default     = "ec2"
 }
 
 variable "git_tag" {
@@ -162,8 +162,8 @@ resource "aws_instance" "app" {
   instance_type          = "t4g.medium"
   subnet_id              = data.aws_subnet.default.id
   vpc_security_group_ids = [aws_security_group.app_sg.id]
-  user_data              = templatefile("${path.module}/user_data.cloud-config.sh.tpl", {
-    git_tag                = var.git_tag
+  user_data = templatefile("${path.module}/user_data.cloud-config.sh.tpl", {
+    git_tag = var.git_tag
     # docker_compose_version = var.docker_compose_version
     # git_repo               = var.git_repo
     # domain_name            = var.domain_name
@@ -211,7 +211,7 @@ resource "aws_route53_record" "app" {
 ###############################################################################
 output "ssm_session_command" {
   description = "Command to start an interactive Bash login shell on the EC2 instance using AWS SSM Session Manager"
-  value = <<-EOT
+  value       = <<-EOT
 aws ssm start-session \
   --target ${aws_instance.app.id} \
   --document-name AWS-StartInteractiveCommand \

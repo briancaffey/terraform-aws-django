@@ -81,13 +81,13 @@ resource "aws_iam_role_policy" "ecs_task" {
         Resource = "*"
       },
       {
-        "Effect": "Allow",
-        "Action": ["sns:ConfirmSubscription"],
-        "Resource": ["arn:aws:sns:*:*:*"]
+        "Effect" : "Allow",
+        "Action" : ["sns:ConfirmSubscription"],
+        "Resource" : ["arn:aws:sns:*:*:*"]
       },
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
@@ -101,8 +101,8 @@ resource "aws_iam_role_policy" "ecs_task" {
         Resource = ["arn:aws:s3:::*", "arn:aws:s3:::*/*"] # TODO: tighten this down
       },
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],

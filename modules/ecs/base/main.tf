@@ -47,10 +47,10 @@ module "s3" {
 ###############################################################################
 
 module "sg" {
-  source = "../../internal/sg"
-  vpc_id = module.vpc.vpc_id
+  source             = "../../internal/sg"
+  vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
-  route_table_ids = module.vpc.private_route_table_ids
+  route_table_ids    = module.vpc.private_route_table_ids
 }
 
 ###############################################################################
@@ -87,6 +87,6 @@ module "rds" {
 ###############################################################################
 
 module "ses" {
-  source             = "../../internal/ses"
-  domain_name        = var.domain_name
+  source      = "../../internal/ses"
+  domain_name = var.domain_name
 }

@@ -216,12 +216,12 @@ variable "rds_password_secret_name" {
 }
 
 variable "email_host" {
-  type = string
+  type    = string
   default = "smtp.gmail.com"
 }
 
 variable "email_port" {
-  type = string
+  type    = string
   default = "587"
 }
 
@@ -235,11 +235,11 @@ variable "email_host_password" {
 
 variable "sentry_dsn" {
   # like https://abc1234@1111111111.ingest.sentry.io/1234567890
-  type = string
+  type    = string
   default = ""
 }
 
 variable "nvidia_api_key" {
-  type = string
+  type    = string
   default = ""
 }
