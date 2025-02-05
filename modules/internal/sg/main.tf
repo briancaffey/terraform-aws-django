@@ -26,7 +26,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-  ip_protocol                  = "tpc"
+  ip_protocol                  = "tcp"
   to_port = 80
   from_port = 80
   cidr_ipv4 = "0.0.0.0/0"
