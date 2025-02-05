@@ -9,7 +9,7 @@ resource "aws_ses_domain_identity" "this" {
 
 # Add DNS records to Route 53 to verify domain ownership
 resource "aws_route53_record" "ses_verification" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = data.aws_route53_zone.primary.zone_id
   name    = "_amazonses.${aws_ses_domain_identity.this.id}"
   type    = "TXT"
   ttl     = "600"
@@ -24,7 +24,7 @@ resource "aws_ses_domain_dkim" "this" {
 # Add DKIM records to Route 53
 resource "aws_route53_record" "dkim" {
   count   = 3
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = data.aws_route53_zone.primary.zone_id
   name    = "${element(aws_ses_domain_dkim.this.dkim_tokens, count.index)}._domainkey.${var.domain_name}"
   type    = "CNAME"
   ttl     = "600"
