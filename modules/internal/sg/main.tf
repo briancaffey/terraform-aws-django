@@ -45,14 +45,6 @@ resource "aws_security_group" "app" {
     self        = true
   }
 
-  # # ✅ Allow outbound traffic to VPC endpoints for ECR
-  # egress {
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   security_groups = [aws_security_group.vpc_endpoints.id]  # 🔹 Allow traffic to VPC endpoints
-  # }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -60,13 +52,6 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # egress {
-  #   description = "Allow all outbound traffic to this SG"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   self        = true
-  # }
 
   # https://github.com/aws/aws-cli/issues/5348
   # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html#synopsis
@@ -79,14 +64,6 @@ resource "aws_security_group" "vpc_endpoints" {
   name        = "${terraform.workspace}-vpc-endpoints-sg"
   description = "Allows ECS tasks to communicate with VPC endpoints"
   vpc_id      = var.vpc_id
-
-  # Allow inbound traffic from the ECS task security group
-  ingress {
-    from_port                = 443
-    to_port                  = 443
-    protocol                 = "tcp"
-    security_groups          = [aws_security_group.app.id]
-  }
 
   ingress {
     from_port                = 443
