@@ -81,3 +81,12 @@ module "rds" {
   rds_username       = var.rds_username
   rds_password       = var.rds_password
 }
+
+###############################################################################
+# RDS
+###############################################################################
+
+module "ses" {
+  source             = "../../internal/ses"
+  domain_name        = var.domain_name
+}
