@@ -39,9 +39,9 @@ resource "aws_security_group" "app" {
 
 # Allow all traffic from ALB security group
 resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-  ip_protocol                 = "-1"
+  ip_protocol                  = "-1"
   referenced_security_group_id = aws_security_group.alb.id
-  security_group_id        = aws_security_group.app.id
+  security_group_id            = aws_security_group.app.id
 }
 
 # Allow self-referencing traffic
@@ -54,8 +54,8 @@ resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
 
 # Allow all outbound traffic
 resource "aws_vpc_security_group_egress_rule" "app_egress" {
-  ip_protocol = "-1"
-  cidr_ipv4   = "10.0.0.0/0"
+  ip_protocol       = "-1"
+  cidr_ipv4         = "10.0.0.0/0"
   security_group_id = aws_security_group.app.id
 }
 
