@@ -3,26 +3,26 @@ resource "aws_security_group" "alb" {
   description = "Controls access to the ALB"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # egress {
+  #   from_port   = 0
+  #   to_port     = 0
+  #   protocol    = "-1"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 }
 
 resource "aws_security_group" "app" {
@@ -38,19 +38,22 @@ resource "aws_security_group" "app" {
 }
 
 # Allow all traffic from ALB security group
-resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-  ip_protocol                  = "-1"
-  referenced_security_group_id = aws_security_group.alb.id
-  security_group_id            = aws_security_group.app.id
-}
+# resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
+#   ip_protocol                  = "-1"
+#   referenced_security_group_id = aws_security_group.alb.id
+#   security_group_id            = aws_security_group.app.id
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
 
 # Allow self-referencing traffic
-resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
-  description                  = "Allow traffic from this SG"
-  ip_protocol                  = "-1"
-  referenced_security_group_id = aws_security_group.app.id
-  security_group_id            = aws_security_group.app.id
-}
+# resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
+#   description                  = "Allow traffic from this SG"
+#   ip_protocol                  = "-1"
+#   referenced_security_group_id = aws_security_group.app.id
+#   security_group_id            = aws_security_group.app.id
+# }
 
 # Allow all outbound traffic
 resource "aws_vpc_security_group_egress_rule" "app_egress" {
@@ -113,13 +116,13 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 # app -> vpc_endpoints egress
-resource "aws_vpc_security_group_egress_rule" "app_to_vpc_endpoints" {
-  from_port                    = 443
-  to_port                      = 443
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = aws_security_group.vpc_endpoints.id
-  security_group_id            = aws_security_group.app.id
-}
+# resource "aws_vpc_security_group_egress_rule" "app_to_vpc_endpoints" {
+#   from_port                    = 443
+#   to_port                      = 443
+#   ip_protocol                  = "tcp"
+#   referenced_security_group_id = aws_security_group.vpc_endpoints.id
+#   security_group_id            = aws_security_group.app.id
+# }
 
 # vpc_endpoints <- app ingress
 resource "aws_vpc_security_group_ingress_rule" "vpc_endpoints_from_app" {
