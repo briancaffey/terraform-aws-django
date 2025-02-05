@@ -2,6 +2,9 @@ resource "aws_security_group" "alb" {
   name        = "${terraform.workspace}-alb-sg"
   description = "Controls access to the ALB"
   vpc_id      = var.vpc_id
+  tags = {
+    Name = "${terraform.workspace}-alb-sg"
+  }
 }
 
 # resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
@@ -29,9 +32,9 @@ resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
   ip_protocol                  = "-1"
   referenced_security_group_id = aws_security_group.alb.id
   security_group_id            = aws_security_group.app.id
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
+  tags = {
+    Name = "${terraform.workspace}-alb-ingress-sg"
+  }
 }
 
 # Allow self-referencing traffic
@@ -47,6 +50,9 @@ resource "aws_vpc_security_group_egress_rule" "app_egress" {
   ip_protocol       = "-1"
   cidr_ipv4         = "10.0.0.0/8"
   security_group_id = aws_security_group.app.id
+  tags = {
+    Name = "${terraform.workspace}-app-egress-sg"
+  }
 }
 
 # VPC endpoints
@@ -100,6 +106,9 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.region}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = var.route_table_ids
+  tags = {
+    Name = "${terraform.workspace}-s3"
+  }
 }
 
 # app -> vpc_endpoints egress
@@ -118,4 +127,7 @@ resource "aws_vpc_security_group_ingress_rule" "vpc_endpoints_from_app" {
   ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.app.id
   security_group_id            = aws_security_group.vpc_endpoints.id
+  tags = {
+    Name = "${terraform.workspace}-vpce-from-app-sg"
+  }
 }
