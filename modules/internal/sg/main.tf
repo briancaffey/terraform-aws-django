@@ -28,14 +28,14 @@ resource "aws_security_group" "app" {
 }
 
 # Allow all traffic from ALB security group
-resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-  ip_protocol                  = "-1"
-  referenced_security_group_id = aws_security_group.alb.id
-  security_group_id            = aws_security_group.app.id
-  tags = {
-    Name = "${terraform.workspace}-alb-ingress-sg"
-  }
-}
+# resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
+#   ip_protocol                  = "-1"
+#   referenced_security_group_id = aws_security_group.alb.id
+#   security_group_id            = aws_security_group.app.id
+#   tags = {
+#     Name = "${terraform.workspace}-alb-ingress-sg"
+#   }
+# }
 
 # Allow self-referencing traffic
 # resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
