@@ -90,6 +90,9 @@ resource "aws_security_group" "vpc_endpoints" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Name = "${terraform.workspace}-vpc-endpoints-sg"
+  }
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
@@ -124,6 +127,15 @@ resource "aws_vpc_endpoint" "s3" {
   tags = {
     Name = "${terraform.workspace}-s3"
   }
+}
+
+resource "aws_vpc_endpoint" "secretsmanager" {
+  vpc_id              = var.vpc.id
+  service_name        = "com.amazonaws.${var.region}.secretsmanager"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.private_subnet_ids
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
 }
 
 # app -> vpc_endpoints egress
