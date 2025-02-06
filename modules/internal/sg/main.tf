@@ -130,7 +130,7 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 resource "aws_vpc_endpoint" "secretsmanager" {
-  vpc_id              = var.vpc.id
+  vpc_id              = var.vpc_id
   service_name        = "com.amazonaws.${var.region}.secretsmanager"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids
