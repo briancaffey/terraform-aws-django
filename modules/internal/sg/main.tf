@@ -29,14 +29,6 @@ resource "aws_vpc_security_group_ingress_rule" "https" {
   }
 }
 
-# resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-#   ip_protocol                  = "tcp"
-#   to_port = 80
-#   from_port = 80
-#   cidr_ipv4 = "0.0.0.0/0"
-#   security_group_id            = aws_security_group.alb.id
-# }
-
 resource "aws_security_group" "app" {
   name        = "${terraform.workspace}-app-sg"
   description = "Allows inbound access from the ALB only"
@@ -61,14 +53,16 @@ resource "aws_vpc_security_group_egress_rule" "alb" {
 }
 
 # Allow all traffic from ALB security group
-# resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
-#   ip_protocol                  = "-1"
-#   referenced_security_group_id = aws_security_group.alb.id
-#   security_group_id            = aws_security_group.app.id
-#   tags = {
-#     Name = "${terraform.workspace}-alb-ingress-sg"
-#   }
-# }
+resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
+  from_port = 0
+  to_port   = 65535
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.alb.id
+  security_group_id            = aws_security_group.app.id
+  tags = {
+    Name = "${terraform.workspace}-alb-ingress-sg"
+  }
+}
 
 # Allow self-referencing traffic
 # resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
