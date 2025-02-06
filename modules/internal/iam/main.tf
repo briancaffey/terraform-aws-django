@@ -128,3 +128,30 @@ resource "aws_iam_role_policy" "ecs_task" {
   })
   role = aws_iam_role.ecs_task.id
 }
+
+
+resource "aws_iam_role_policy" "ecs_host_task_all" {
+  name = "${terraform.workspace}-ecs-task-all-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecs:*",
+          "ec2:*",
+          "elasticloadbalancing:*",
+          "ecr:*",
+          "cloudwatch:*",
+          "s3:*",
+          "rds:*",
+          "logs:*",
+          "elasticache:*",
+          "secretsmanager:*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+  role = aws_iam_role.ecs_task.name
+}
