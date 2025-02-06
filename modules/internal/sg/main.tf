@@ -33,9 +33,6 @@ resource "aws_security_group" "app" {
   name        = "${terraform.workspace}-app-sg"
   description = "Allows inbound access from the ALB only"
   vpc_id      = var.vpc_id
-
-  # https://github.com/aws/aws-cli/issues/5348
-  # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html#synopsis
   tags = {
     Name = "${terraform.workspace}-ecs-sg"
   }
@@ -64,14 +61,6 @@ resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
   }
 }
 
-# Allow self-referencing traffic
-# resource "aws_vpc_security_group_ingress_rule" "self_ingress" {
-#   description                  = "Allow traffic from this SG"
-#   ip_protocol                  = "-1"
-#   referenced_security_group_id = aws_security_group.app.id
-#   security_group_id            = aws_security_group.app.id
-# }
-
 # Allow all outbound traffic
 resource "aws_vpc_security_group_egress_rule" "app_egress" {
   ip_protocol       = "-1"
@@ -83,7 +72,6 @@ resource "aws_vpc_security_group_egress_rule" "app_egress" {
 }
 
 # VPC endpoints
-
 resource "aws_security_group" "vpc_endpoints" {
   name        = "${terraform.workspace}-vpc-endpoints-sg"
   description = "Allows ECS tasks to communicate with VPC endpoints"
@@ -139,13 +127,16 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 # app -> vpc_endpoints egress
-# resource "aws_vpc_security_group_egress_rule" "app_to_vpc_endpoints" {
-#   from_port                    = 443
-#   to_port                      = 443
-#   ip_protocol                  = "tcp"
-#   referenced_security_group_id = aws_security_group.vpc_endpoints.id
-#   security_group_id            = aws_security_group.app.id
-# }
+resource "aws_vpc_security_group_egress_rule" "app_to_vpc_endpoints" {
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id            = aws_security_group.app.id
+  tags = {
+    Name = "${terraform.workspace}-app-to-vpce-egress-sg"
+  }
+}
 
 # vpc_endpoints <- app ingress
 resource "aws_vpc_security_group_ingress_rule" "vpc_endpoints_from_app" {
