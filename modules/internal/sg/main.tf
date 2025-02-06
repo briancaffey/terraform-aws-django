@@ -7,6 +7,28 @@ resource "aws_security_group" "alb" {
   }
 }
 
+resource "aws_vpc_security_group_ingress_rule" "http" {
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port = 80
+  security_group_id = aws_security_group.alb.id
+  to_port   = 80
+  tags = {
+    Name = "${terraform.workspace}-alb-ingress-http-sgr"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "https" {
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port = 443
+  security_group_id = aws_security_group.alb.id
+  to_port   = 443
+  tags = {
+    Name = "${terraform.workspace}-alb-ingress-https-sgr"
+  }
+}
+
 # resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
 #   ip_protocol                  = "tcp"
 #   to_port = 80
@@ -24,6 +46,17 @@ resource "aws_security_group" "app" {
   # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html#synopsis
   tags = {
     Name = "${terraform.workspace}-ecs-sg"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "alb" {
+  security_group_id = aws_security_group.alb.id
+  referenced_security_group_id = aws_security_group.app.id
+  ip_protocol                  = "tcp"
+  from_port = 0
+  to_port   = 65535
+  tags = {
+    Name = "${terraform.workspace}-alb-to-app-sgr"
   }
 }
 
