@@ -76,20 +76,6 @@ resource "aws_security_group" "vpc_endpoints" {
   name        = "${terraform.workspace}-vpc-endpoints-sg"
   description = "Allows ECS tasks to communicate with VPC endpoints"
   vpc_id      = var.vpc_id
-
-  ingress {
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    self      = true
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   tags = {
     Name = "${terraform.workspace}-vpc-endpoints-sg"
   }
