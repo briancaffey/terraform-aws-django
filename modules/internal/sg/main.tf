@@ -64,7 +64,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb_ingress" {
 # Allow all outbound traffic
 resource "aws_vpc_security_group_egress_rule" "app_egress" {
   ip_protocol       = "-1"
-  cidr_ipv4         = "10.0.0.0/8"
+  cidr_ipv4         = "0.0.0.0/0"
   security_group_id = aws_security_group.app.id
   tags = {
     Name = "${terraform.workspace}-app-egress-sg"
